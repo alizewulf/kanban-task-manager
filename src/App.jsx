@@ -6,13 +6,13 @@ import MainContent from './MainContent'
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState("Platform Launch")
-
+  const [tasks, setTasks] = useState([])
   return (
     <div className="flex h-screen">
       <SideBar currentPage={currentPage} setCurrentPage={setCurrentPage} />
       
       <div className="flex flex-col flex-1">
-        <Header title={currentPage} />
+        <Header title={currentPage} setTasks={setTasks}/>
         <MainContent />
       </div>
     </div>

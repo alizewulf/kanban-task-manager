@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import dots from './assets/3dots.svg'
 import LightBtn from './base/Button'
-import Modal from './base/Modal'
+import Modal from './addNewTask'
 
-function Header({title}) {
+function Header({title, setTasks}) {
     const [isOpen, setIsOpen] = useState(false)
     return (
         <>
@@ -14,7 +14,7 @@ function Header({title}) {
             <img src={dots} alt="3 dots" />
             </div>
         </header>
-            {isOpen && <Modal setIsOpen={setIsOpen}/>}
+            {isOpen && <Modal setIsOpen={setIsOpen} setTasks={setTasks}/>}
         </>
         )
 }

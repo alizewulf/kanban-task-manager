@@ -1,14 +1,50 @@
-import LightBtn from "./base/Button"
+import { useState } from "react"
+
+import CreateColumn from "./createColumn"
+import EmptyState from "./state/emptyState"
+import Board from "./state/Board"
 
 function MainContent() {
-    return(
-        <main className="bg-[#E4EBFA] flex flex-1">
-            <div className="flex flex-1 flex-col gap-8 justify-center items-center">
-                <span className="font-bold text-[18px] text-[#828FA3]">This board is empty. Create a new column to get started.</span>
-                <LightBtn children="+add new column" variant="primary"/>
-            </div>
-        </main>
-    )
-}
+  const [isOpen, setIsOpen] = useState(false)
+  const [columns, setColumns] = useState([])
 
+  function addColumn(column) {
+    setColumns(prev => [
+      ...prev,
+      { ...column, tasks: [] }
+    ])
+  }
+
+  function addTask(columnId, task) {
+    setColumns(prev =>
+      prev.map(col =>
+        col.id === columnId
+          ? { ...col, tasks: [...col.tasks, task] }
+          : col
+      )
+    )
+  }
+
+  return (
+    <main className="bg-[#E4EBFA] flex flex-1">
+
+      {columns.length === 0 ? (
+        <EmptyState setIsOpen={setIsOpen} />
+      ) : (
+        <Board
+          columns={columns}
+          onAddTask={addTask}
+        />
+      )}
+
+      {isOpen && (
+        <CreateColumn
+          setIsOpen={setIsOpen}
+          onCreateColumn={addColumn}
+        />
+      )}
+
+    </main>
+  )
+}
 export default MainContent
