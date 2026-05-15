@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import dots from './assets/3dots.svg'
-import LightBtn from './base/Button'
-import Modal from './addNewTask'
+import dots from '../../assets/3dots.svg'
+import LightBtn from '../common/Button'
+import Modal from '../modals/AddNewTask'
 
 function Header({title, setTasks}) {
     const [isOpen, setIsOpen] = useState(false)

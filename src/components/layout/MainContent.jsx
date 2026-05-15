@@ -1,11 +1,9 @@
 import { useState } from "react"
+import CreateColumn from "../modals/CreateColumn"
+import EmptyState from "../board/EmptyState"
+import Board from "../board/Board"
 
-import CreateColumn from "./createColumn"
-import EmptyState from "./state/emptyState"
-import Board from "./state/Board"
-
-function MainContent() {
-  const [isOpen, setIsOpen] = useState(false)
+function MainContent({ setActiveModal, activeModal }) {
   const [columns, setColumns] = useState([])
 
   function addColumn(column) {
@@ -29,7 +27,7 @@ function MainContent() {
     <main className="bg-[#E4EBFA] flex flex-1">
 
       {columns.length === 0 ? (
-        <EmptyState setIsOpen={setIsOpen} />
+        <EmptyState setActiveModal={setActiveModal} />
       ) : (
         <Board
           columns={columns}
@@ -37,9 +35,9 @@ function MainContent() {
         />
       )}
 
-      {isOpen && (
+      {activeModal === "createColumn" && (
         <CreateColumn
-          setIsOpen={setIsOpen}
+          setActiveModal={setActiveModal}
           onCreateColumn={addColumn}
         />
       )}
@@ -47,4 +45,5 @@ function MainContent() {
     </main>
   )
 }
+
 export default MainContent

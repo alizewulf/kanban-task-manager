@@ -1,36 +1,30 @@
 import { useState } from "react"
-import LightBtn from "./base/Button"
-import BaseInput from "./base/Input"
+import BaseInput from "../common/Input"
+import LightBtn from "../common/Button"
 
-function CreateColumn({ setIsOpen, onCreateColumn }) {
+function CreateBoard({ onCreateBoard, setActiveModal }) {
   const [title, setTitle] = useState("")
 
-  function handleCreate() {
+  function handleSubmit() {
     if (!title.trim()) return
 
-    onCreateColumn({
-      id: Date.now(),
-      title,
-      tasks: []
-    })
-
-    setTitle("")
-    setIsOpen(false)
+    onCreateBoard(title)
+    setActiveModal(null)
   }
 
   return (
     <div
-      onClick={() => setIsOpen(false)}
+      onClick={() => setActiveModal(null)}
       className="absolute inset-0 flex items-center justify-center bg-[#000000]/50"
     >
       <div
         onClick={(e) => e.stopPropagation()}
         className="bg-white px-8 py-6 flex flex-col gap-6 rounded-xl w-[400px]"
       >
-        <h2 className="text-lg font-bold">Create column</h2>
+        <h2 className="text-lg font-bold">Create Board</h2>
 
         <BaseInput
-          title="Column name"
+          title="Board name"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="e.g. Todo"
@@ -39,14 +33,14 @@ function CreateColumn({ setIsOpen, onCreateColumn }) {
         <div className="flex gap-2 justify-end">
           <LightBtn
             variant="secondary"
-            onClick={() => setIsOpen(false)}
+            onClick={() => setActiveModal(null)}
           >
             Cancel
           </LightBtn>
 
           <LightBtn
             variant="primary"
-            onClick={handleCreate}
+            onClick={handleSubmit}
           >
             Create
           </LightBtn>
@@ -56,4 +50,4 @@ function CreateColumn({ setIsOpen, onCreateColumn }) {
   )
 }
 
-export default CreateColumn
+export default CreateBoard

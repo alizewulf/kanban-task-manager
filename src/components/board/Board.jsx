@@ -1,4 +1,5 @@
-import Column from "../column"
+import Column from "./Column"
+
 function Board({ columns }) {
     
   return (
@@ -6,8 +7,6 @@ function Board({ columns }) {
       {columns.map(col => (
         <Column key={col.id} column={col} />
       ))}
-
-      <AddColumnButton />
     </div>
   )
 }

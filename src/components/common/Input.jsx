@@ -1,6 +1,6 @@
 function BaseInput({
   title = "Enter a title",
-  placeholder = "e.g. It’s always good to take a break.",
+  placeholder = "e.g. It's always good to take a break.",
   value,
   onChange
 }) {

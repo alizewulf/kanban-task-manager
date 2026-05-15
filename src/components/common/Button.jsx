@@ -6,7 +6,7 @@ function LightBtn({children = "Error: Children can't be empty", variant = "prima
         destructive: 'bg-[#EA5555] text-white py-[9px] px-[70px] rounded-[20px] hover:bg-[#FF9898]',
     }
     return (
-        <button onClick={onClick} className={`${base} ${variants[variant]}`}>{children}</button> // add const base above const variants
+        <button onClick={onClick} className={`${base} ${variants[variant]}`}>{children}</button>
     )
 }
 

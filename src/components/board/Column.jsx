@@ -1,4 +1,4 @@
-import LightBtn from "./base/Button"
+import LightBtn from "../common/Button"
 
 function Column({ column }) {
   return (

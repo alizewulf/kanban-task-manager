@@ -1,6 +1,6 @@
 import { useState } from "react"
-import LightBtn from "./base/Button"
-import BaseInput from "./base/Input"
+import LightBtn from "../common/Button"
+import BaseInput from "../common/Input"
 
 function AddTask({ setIsOpen, onCreateTask, columnId }) {
   const [title, setTitle] = useState("")
