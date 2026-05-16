@@ -21,29 +21,17 @@ function CreateBoard({ onCreateBoard, setActiveModal }) {
         onClick={(e) => e.stopPropagation()}
         className="bg-white px-8 py-6 flex flex-col gap-6 rounded-xl w-[400px]"
       >
-        <h2 className="text-lg font-bold">Create Board</h2>
+        <h2 className="text-lg font-bold">Add New Board</h2>
 
         <BaseInput
-          title="Board name"
+          title="name"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="e.g. Todo"
         />
 
-        <div className="flex gap-2 justify-end">
-          <LightBtn
-            variant="secondary"
-            onClick={() => setActiveModal(null)}
-          >
-            Cancel
-          </LightBtn>
-
-          <LightBtn
-            variant="primary"
-            onClick={handleSubmit}
-          >
-            Create
-          </LightBtn>
+        <div className="flex gap-2 justify-center flex-1 ">
+          <button className="bg-[#635FC7] text-white capitalize duration-300 cursor-pointer items-center font-bold justify-center px-[61.5px] h-[48px] rounded-[24px] hover:bg-[#A8A4FF] flex-1" onClick={handleSubmit}>Create</button>
         </div>
       </div>
     </div>

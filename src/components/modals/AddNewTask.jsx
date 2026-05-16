@@ -57,7 +57,7 @@ function AddTask({ setIsOpen, onCreateTask, columnId }) {
         onClick={(e) => e.stopPropagation()}
         className="bg-white px-8 py-6 flex flex-col gap-6 rounded-xl w-[400px]"
       >
-        <h2 className="font-bold text-lg">Add Task</h2>
+        <h2 className="font-bold text-lg">Add New Task</h2>
 
         <BaseInput
           title="Title"
@@ -92,6 +92,13 @@ function AddTask({ setIsOpen, onCreateTask, columnId }) {
           >
             + add subtask
           </LightBtn>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <span className="text-xs font-bold text-[#828FA3]">Todo</span>
+          <select name="Status" className="flex flex-1 border-[#828FA3]/25 border-2 py-2 px-4">
+            <option value="Todo">Todo</option>
+          </select>          
         </div>
 
         <LightBtn

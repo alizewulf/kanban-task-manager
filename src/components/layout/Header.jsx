@@ -8,7 +8,7 @@ function Header({title, setTasks}) {
     return (
         <>
         <header className="flex justify-between items-center pr-6 pl-8 pb-7 pt-5 border-b-2 border-b-[#E4EBFA]">
-            <h1 className="text-[24px] font-bold">{title}</h1>
+            <h1 className="text-[24px] font-bold capitalize">{title}</h1>
             <div className="flex gap-6">
             <LightBtn onClick={() => setIsOpen(true)} children='+ add new task' variant='primary'/>
             <img src={dots} alt="3 dots" />

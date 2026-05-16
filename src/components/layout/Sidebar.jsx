@@ -4,16 +4,30 @@ import fluentDashboard from "../../assets/fluent-dashboard.svg";
 import fluentDisabled from "../../assets/fluent-disabled.svg";
 import sun from "../../assets/sun.svg";
 import moon from "../../assets/moon.svg";
-import eye from "../../assets/eye.svg";
+import showSideBarEye from "../../assets/hideSideBarEye.svg";
+import hideSideBarEye from '../../assets/showSideBarEye.svg'
 import { useState } from "react";
 
 function SideBar({ currentPage, setCurrentPage, boards, setActiveModal }) {
   const [isDark, setIsDark] = useState(false);
-
+  const [sidebarStatus, changeSidebarStatus] = useState(false)
   const changePage = (button) => {
     setCurrentPage(button);
   };
 
+  function sidebarChange() {
+    if (sidebarStatus === false) {
+      changeSidebarStatus(true)
+    } else {
+      changeSidebarStatus(false)
+    }
+  }
+
+  if (sidebarStatus) {
+    return (
+      <button className="absolute bottom-8 left-0 flex justify-center items-center py-4.75 pl-4.5 pr-5.5 rounded-r-full bg-[#635FC7]" onClick={sidebarChange}><img className="w-4 h-2.5" src={hideSideBarEye}/></button>
+    )
+  } else {
   return (
     <aside className="md:flex flex-col h-screen hidden justify-between border-r-[#E4EBFA] border-r-2">
       
@@ -31,7 +45,7 @@ function SideBar({ currentPage, setCurrentPage, boards, setActiveModal }) {
             {boards.map((button) => (
               <li
                 key={button}
-                className={`text-[15px] cursor-pointer py-4 pl-8 font-bold flex gap-4 items-center ${
+                className={`text-[15px] cursor-pointer py-4 pl-8 font-bold capitalize flex gap-4 items-center ${
                   currentPage === button
                     ? "bg-[#635FC7] text-white rounded-r-full"
                     : "text-[#828FA3]"
@@ -48,7 +62,7 @@ function SideBar({ currentPage, setCurrentPage, boards, setActiveModal }) {
 
             <li
               onClick={() => setActiveModal("createBoard")}
-              className="text-[#635FC7] text-[15px] py-4 pl-8 cursor-pointer flex gap-4 font-bold items-center"
+              className="text-[#635FC7] text-[15px] py-4 pl-8 capitalize cursor-pointer flex gap-4 font-bold items-center"
             >
               <img src={fluentDashboard} alt="dashboard icon" />
               + Create New Board
@@ -96,13 +110,14 @@ function SideBar({ currentPage, setCurrentPage, boards, setActiveModal }) {
           </div>
         </div>
 
-        <button className="flex gap-3.5 font-bold text-[15px] text-[#828FA3] items-center">
-          <img src={eye} alt="eye" />
+        <button onClick={sidebarChange} className="flex gap-3.5 font-bold text-[15px] text-[#828FA3] items-center">
+          <img src={showSideBarEye} alt="eye" />
           Hide Sidebar
         </button>
       </div>
     </aside>
   );
+  }
 }
 
 export default SideBar;
