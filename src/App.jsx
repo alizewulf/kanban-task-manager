@@ -52,6 +52,7 @@ export default function App() {
         <CreateBoard
           setActiveModal={setActiveModal}
           onCreateBoard={handleCreateBoard}
+          boards={boards}
         />
       )}
 

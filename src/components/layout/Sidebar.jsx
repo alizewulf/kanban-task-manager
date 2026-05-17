@@ -1,4 +1,4 @@
-import logo from "../../assets/Group 16.svg";
+import logo from "../../assets/kanbanLogo.svg";
 import fluentActive from "../../assets/fluent-active.svg";
 import fluentDashboard from "../../assets/fluent-dashboard.svg";
 import fluentDisabled from "../../assets/fluent-disabled.svg";
@@ -32,7 +32,7 @@ function SideBar({ currentPage, setCurrentPage, boards, setActiveModal }) {
     <aside className="md:flex flex-col h-screen hidden justify-between border-r-[#E4EBFA] border-r-2">
       
       <div className="flex-1">
-        <div className="py-8 px-8.5">
+        <div className="py-8 px-8.5 select-none">
           <img src={logo} alt="LOGO" />
         </div>
 
@@ -55,6 +55,7 @@ function SideBar({ currentPage, setCurrentPage, boards, setActiveModal }) {
                 <img
                   src={currentPage === button ? fluentActive : fluentDisabled}
                   alt="icon"
+                  className="select-none"
                 />
                 {button}
               </li>
@@ -64,7 +65,7 @@ function SideBar({ currentPage, setCurrentPage, boards, setActiveModal }) {
               onClick={() => setActiveModal("createBoard")}
               className="text-[#635FC7] text-[15px] py-4 pl-8 capitalize cursor-pointer flex gap-4 font-bold items-center"
             >
-              <img src={fluentDashboard} alt="dashboard icon" />
+              <img src={fluentDashboard} className="select-none" alt="dashboard icon" />
               + Create New Board
             </li>
           </ul>
@@ -78,7 +79,7 @@ function SideBar({ currentPage, setCurrentPage, boards, setActiveModal }) {
             <img
               src={sun}
               alt="Light mode"
-              className={`cursor-pointer transition-opacity ${
+              className={`select-none cursor-pointer transition-opacity ${
                 isDark ? "opacity-40" : "opacity-100"
               }`}
               onClick={() => setIsDark(false)}
@@ -102,7 +103,7 @@ function SideBar({ currentPage, setCurrentPage, boards, setActiveModal }) {
             <img
               src={moon}
               alt="Dark mode"
-              className={`cursor-pointer transition-opacity ${
+              className={`select-none cursor-pointer transition-opacity ${
                 isDark ? "opacity-100" : "opacity-40"
               }`}
               onClick={() => setIsDark(true)}
@@ -111,7 +112,7 @@ function SideBar({ currentPage, setCurrentPage, boards, setActiveModal }) {
         </div>
 
         <button onClick={sidebarChange} className="flex gap-3.5 font-bold text-[15px] text-[#828FA3] items-center">
-          <img src={showSideBarEye} alt="eye" />
+          <img src={showSideBarEye} className="select-none" alt="eye" />
           Hide Sidebar
         </button>
       </div>

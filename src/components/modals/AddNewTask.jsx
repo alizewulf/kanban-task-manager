@@ -1,7 +1,6 @@
 import { useState } from "react"
 import LightBtn from "../common/Button"
-import BaseInput from "../common/Input"
-
+import BaseInput, { baseInputClass, baseLabelClass } from "../common/Input"
 function AddTask({ setIsOpen, onCreateTask, columnId }) {
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
@@ -65,26 +64,25 @@ function AddTask({ setIsOpen, onCreateTask, columnId }) {
           onChange={(e) => setTitle(e.target.value)}
           placeholder="e.g. Take coffee break"
         />
+        <div className="flex flex-col gap-2">
+          <label className="text-[12px] font-bold text-[#828FA3] capitalize">
+            Description
+          </label>
 
-        <BaseInput
-          title="Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          placeholder="e.g. Short break"
-        />
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="e.g. Short break"
+            className="h-24 px-3 pt-2 outline-0 rounded-sm border-[#828FA3]/25 border-2 text-[13px] resize-none"
+          />
+        </div>
 
         <div className="flex flex-col gap-2">
-          {subtasks.map(st => (
-            <BaseInput
-              key={st.id}
-              title="Subtask"
-              value={st.value}
-              onChange={(e) =>
-                updateSubtask(st.id, e.target.value)
-              }
-              placeholder="e.g. Make coffee"
-            />
-          ))}
+          <label className={`${baseLabelClass} flex flex-col gap-3`} htmlFor="">Subtasks
+            {subtasks.map(st => (
+              <input placeholder="e.g. Make Coffee" className={baseInputClass}/>
+            ))}
+          </label>
 
           <LightBtn
             variant="secondary"
@@ -96,7 +94,7 @@ function AddTask({ setIsOpen, onCreateTask, columnId }) {
 
         <div className="flex flex-col gap-2">
           <span className="text-xs font-bold text-[#828FA3]">Todo</span>
-          <select name="Status" className="flex flex-1 border-[#828FA3]/25 border-2 py-2 px-4">
+          <select name="Status" className="flex text-[13px]/[23] flex-1 border-[#828FA3]/25 border-2 py-2 px-4">
             <option value="Todo">Todo</option>
           </select>          
         </div>
