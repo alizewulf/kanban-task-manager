@@ -28,29 +28,26 @@ function CreateColumn({ setActiveModal, onCreateColumn }) {
         className="bg-white px-8 py-6 flex flex-col gap-6 rounded-xl w-[400px]"
       >
         <h2 className="text-lg font-bold">Create column</h2>
-
-        <BaseInput
-          title="Column name"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="e.g. Todo"
-        />
-
-        <div className="flex gap-2 justify-end">
-          <LightBtn
-            variant="secondary"
-            onClick={() => setActiveModal(null)}
-          >
-            Cancel
-          </LightBtn>
+      <div className="flex flex-col gap-2">
+      <BaseInput
+        title="Create Column"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            handleCreate()
+          }
+        }}
+      />
+      </div>
 
           <LightBtn
             variant="primary"
             onClick={handleCreate}
+            className="flex flex-1"
           >
             Create
           </LightBtn>
-        </div>
       </div>
     </div>
   )

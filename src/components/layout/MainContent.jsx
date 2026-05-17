@@ -1,15 +1,23 @@
-import { useState } from "react"
 import CreateColumn from "../modals/CreateColumn"
 import EmptyState from "../board/EmptyState"
 import Board from "../board/Board"
+import { nanoid } from "nanoid"
 
-function MainContent({ setActiveModal, activeModal }) {
-  const [columns, setColumns] = useState([])
+function MainContent({
+  columns,
+  setColumns,
+  setActiveModal,
+  activeModal
+}) {
 
   function addColumn(column) {
     setColumns(prev => [
       ...prev,
-      { ...column, tasks: [] }
+      {
+        id: nanoid(),
+        title: column.title,
+        tasks: []
+      }
     ])
   }
 
@@ -17,7 +25,10 @@ function MainContent({ setActiveModal, activeModal }) {
     setColumns(prev =>
       prev.map(col =>
         col.id === columnId
-          ? { ...col, tasks: [...col.tasks, task] }
+          ? {
+              ...col,
+              tasks: [...col.tasks, task]
+            }
           : col
       )
     )
