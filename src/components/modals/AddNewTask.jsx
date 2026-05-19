@@ -1,9 +1,16 @@
 import { useState } from "react"
 import LightBtn from "../common/Button"
 import BaseInput, { baseInputClass, baseLabelClass } from "../common/Input"
-function AddTask({ setIsOpen, onCreateTask, columnId }) {
+
+function AddTask({ setIsOpen, onCreateTask, columns }) {
+  const safeColumns = columns || []
+
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
+
+  const [selectedColumn, setSelectedColumn] = useState(
+    safeColumns[0]?.id || ""
+  )
 
   const [subtasks, setSubtasks] = useState([
     { id: 1, value: "" },
@@ -27,7 +34,7 @@ function AddTask({ setIsOpen, onCreateTask, columnId }) {
 
   function handleCreate() {
     if (!title.trim()) return
-
+    console.log("onCreateTask:", onCreateTask)
     const task = {
       id: Date.now(),
       title,
@@ -35,7 +42,7 @@ function AddTask({ setIsOpen, onCreateTask, columnId }) {
       subtasks
     }
 
-    onCreateTask(columnId, task)
+    onCreateTask(selectedColumn, task)
 
     setTitle("")
     setDescription("")
@@ -56,7 +63,9 @@ function AddTask({ setIsOpen, onCreateTask, columnId }) {
         onClick={(e) => e.stopPropagation()}
         className="bg-white px-8 py-6 flex flex-col gap-6 rounded-xl w-[400px]"
       >
-        <h2 className="font-bold text-lg">Add New Task</h2>
+        <h2 className="font-bold text-lg">
+          Add New Task
+        </h2>
 
         <BaseInput
           title="Title"
@@ -64,6 +73,7 @@ function AddTask({ setIsOpen, onCreateTask, columnId }) {
           onChange={(e) => setTitle(e.target.value)}
           placeholder="e.g. Take coffee break"
         />
+
         <div className="flex flex-col gap-2">
           <label className="text-[12px] font-bold text-[#828FA3] capitalize">
             Description
@@ -78,9 +88,19 @@ function AddTask({ setIsOpen, onCreateTask, columnId }) {
         </div>
 
         <div className="flex flex-col gap-2">
-          <label className={`${baseLabelClass} flex flex-col gap-3`} htmlFor="">Subtasks
+          <label className={`${baseLabelClass} flex flex-col gap-3`}>
+            Subtasks
+
             {subtasks.map(st => (
-              <input placeholder="e.g. Make Coffee" className={baseInputClass}/>
+              <input
+                key={st.id}
+                value={st.value}
+                onChange={(e) =>
+                  updateSubtask(st.id, e.target.value)
+                }
+                placeholder="e.g. Make Coffee"
+                className={baseInputClass}
+              />
             ))}
           </label>
 
@@ -93,10 +113,26 @@ function AddTask({ setIsOpen, onCreateTask, columnId }) {
         </div>
 
         <div className="flex flex-col gap-2">
-          <span className="text-xs font-bold text-[#828FA3]">Todo</span>
-          <select name="Status" className="flex text-[13px]/[23] flex-1 border-[#828FA3]/25 border-2 py-2 px-4">
-            <option value="Todo">Todo</option>
-          </select>          
+          <span className="text-xs font-bold text-[#828FA3]">
+            Status
+          </span>
+
+          <select
+            value={selectedColumn}
+            onChange={(e) =>
+              setSelectedColumn(e.target.value)
+            }
+            className="flex text-[13px]/[23] flex-1 border-[#828FA3]/25 border-2 py-2 px-4 rounded-sm outline-0"
+          >
+            {safeColumns.map(column => (
+              <option
+                key={column.id}
+                value={column.id}
+              >
+                {column.title}
+              </option>
+            ))}
+          </select>
         </div>
 
         <LightBtn

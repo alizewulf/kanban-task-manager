@@ -1,39 +1,16 @@
 import LightBtn from "../common/Button"
 
-function Column({ column }) {
+function Column({ column, onOpenAddTask }) {
   return (
-    <div className="w-[280px] bg-white rounded-lg p-4 flex flex-col gap-3">
-      
-      <div className="flex items-center justify-between">
-        <h3 className="font-bold text-[#828FA3]">
-          {column.title}
-        </h3>
-
-        <span className="text-xs text-[#828FA3]">
-          {column.tasks.length}
-        </span>
-      </div>
-
-      <div className="flex flex-col gap-2">
-        {column.tasks.map(task => (
-          <div
-            key={task.id}
-            className="bg-[#F4F7FD] p-2 rounded"
-          >
-            <p className="text-sm font-medium">
-              {task.title}
-            </p>
-          </div>
-        ))}
-      </div>
+    <div className="flex flex-col gap-3">
+      <span>{column.title}</span>
 
       <LightBtn
         variant="secondary"
-        onClick={() => {}}
+        onClick={() => onOpenAddTask(column.id)}
       >
-        + add task
+        + Add Task
       </LightBtn>
-
     </div>
   )
 }

@@ -14,13 +14,35 @@ export default function App() {
   const [boards, setBoards] = useState([
     "Platform Launch",
     "Marketing Plan",
-    "Roadmap"
+    "Roadmap",
   ])
 
   const [columns, setColumns] = useState([])
 
+  // TASK MODAL STATE
+  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false)
+  const [activeColumnId, setActiveColumnId] = useState(null)
+
   function handleCreateBoard(boardName) {
     setBoards(prev => [...prev, boardName])
+  }
+
+  function openAddTask(columnId) {
+    setActiveColumnId(columnId)
+    setIsTaskModalOpen(true)
+  }
+
+  function addTask(columnId, task) {
+    setColumns(prev =>
+      prev.map(col =>
+        col.id === columnId
+          ? {
+              ...col,
+              tasks: [...col.tasks, task]
+            }
+          : col
+      )
+    )
   }
 
   return (
@@ -34,9 +56,10 @@ export default function App() {
       />
 
       <div className="flex flex-col flex-1">
+
         <Header
           title={currentPage}
-          setActiveModal={setActiveModal}
+          setIsTaskModalOpen={setIsTaskModalOpen}
         />
 
         <MainContent
@@ -44,7 +67,15 @@ export default function App() {
           setColumns={setColumns}
           setActiveModal={setActiveModal}
           activeModal={activeModal}
+
+          isTaskModalOpen={isTaskModalOpen}
+          setIsTaskModalOpen={setIsTaskModalOpen}
+          activeColumnId={activeColumnId}
+          openAddTask={openAddTask}
+
+          addTask={addTask}
         />
+
       </div>
 
       {activeModal === "createBoard" && (
