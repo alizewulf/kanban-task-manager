@@ -16,11 +16,7 @@ function SideBar({ currentPage, setCurrentPage, boards, setActiveModal }) {
   };
 
   function sidebarChange() {
-    if (sidebarStatus === false) {
-      changeSidebarStatus(true)
-    } else {
-      changeSidebarStatus(false)
-    }
+    changeSidebarStatus(prev => !prev)
   }
 
   if (sidebarStatus) {

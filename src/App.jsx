@@ -5,60 +5,36 @@ import SideBar from "./components/layout/Sidebar"
 import Header from "./components/layout/Header"
 import MainContent from "./components/layout/MainContent"
 import CreateBoard from "./components/modals/CreateBoard"
-
+import { createColumnUtil } from "./components/utils/createColumnUtil"
 export default function App() {
   const [activeModal, setActiveModal] = useState(null)
   
   const [boards, setBoards] = useState([
-    {
-      id: "1",
-      title: "Platform Launch",
-      columns: [
-        {
-          id: "c1",
-          title: "Todo",
-          tasks: []
-        },
-        {
-          id: "c2",
-          title: "Doing",
-          tasks: []
-        }
-      ]
-    },
-    {
-      id: "2",
-      title: "Marketing Plan",
-      columns: [
-        {
-          id: "c1",
-          title: "Todo",
-          tasks: []
-        },
-        {
-          id: "c2",
-          title: "Doing",
-          tasks: []
-        }
-      ]
-    },
-    {
-      id: "3",
-      title: "Roadmap",
-      columns: [
-        {
-          id: "c1",
-          title: "Todo",
-          tasks: []
-        },
-        {
-          id: "c2",
-          title: "Doing",
-          tasks: []
-        }
-      ]
-    }
-  ])
+  {
+    id: "1",
+    title: "Platform Launch",
+    columns: [
+      createColumnUtil("Todo", "c1"),
+      createColumnUtil("Doing", "c2")
+    ]
+  },
+  {
+    id: "2",
+    title: "Marketing Plan",
+    columns: [
+      createColumnUtil("Todo", "c1"),
+      createColumnUtil("Doing", "c2")
+    ]
+  },
+  {
+    id: "3",
+    title: "Roadmap",
+    columns: [
+      createColumnUtil("Todo", "c1"),
+      createColumnUtil("Doing", "c2")
+    ]
+  }
+])
   const [currentPage, setCurrentPage] = useState(() => boards[0]?.id)
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false)
   const [activeColumnId, setActiveColumnId] = useState(null)

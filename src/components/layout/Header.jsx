@@ -11,7 +11,7 @@ function Header({ activeBoard, setIsTaskModalOpen }) {
           children='+ add new task'
           variant='primary'
         />
-        <img src={dots} alt="3 dots" />
+        <img src={dots} alt="3 dots" className="cursor-pointer"/>
       </div>
     </header>
   )
