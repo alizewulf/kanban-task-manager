@@ -1,12 +1,10 @@
 import CreateColumn from "../modals/CreateColumn"
 import EmptyState from "../board/EmptyState"
 import Board from "../board/Board"
-import { nanoid } from "nanoid"
 import AddTask from "../modals/AddNewTask"
 
 function MainContent({
-  columns,
-  setColumns,
+  board,
   setActiveModal,
   activeModal,
   isTaskModalOpen,
@@ -15,26 +13,22 @@ function MainContent({
   openAddTask,
   addTask
 }) {
-
-  function addColumn(column) {
-    setColumns(prev => [
-      ...prev,
-      {
-        id: nanoid(),
-        title: column.title,
-        tasks: []
-      }
-    ])
+  if (!board) {
+    return (
+      <main className="bg-[#E4EBFA] flex flex-1">
+        <EmptyState setActiveModal={setActiveModal} />
+      </main>
+    )
   }
 
   return (
     <main className="bg-[#E4EBFA] flex flex-1">
 
-      {columns.length === 0 ? (
+      {board.columns.length === 0 ? (
         <EmptyState setActiveModal={setActiveModal} />
       ) : (
         <Board
-          columns={columns}
+          columns={board.columns}
           onOpenAddTask={openAddTask}
         />
       )}
@@ -42,7 +36,9 @@ function MainContent({
       {activeModal === "createColumn" && (
         <CreateColumn
           setActiveModal={setActiveModal}
-          onCreateColumn={addColumn}
+          onCreateColumn={(column) => {
+            // временно без setBoards
+          }}
         />
       )}
 
@@ -50,7 +46,7 @@ function MainContent({
         <AddTask
           setIsOpen={setIsTaskModalOpen}
           onCreateTask={addTask}
-          columns={columns}
+          columns={board.columns}
           activeColumnId={activeColumnId}
         />
       )}

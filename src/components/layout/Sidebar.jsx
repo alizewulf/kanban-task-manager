@@ -42,24 +42,24 @@ function SideBar({ currentPage, setCurrentPage, boards, setActiveModal }) {
           </span>
 
           <ul>
-            {boards.map((button) => (
-              <li
-                key={button}
-                className={`text-[15px] cursor-pointer py-4 pl-8 font-bold capitalize flex gap-4 items-center ${
-                  currentPage === button
-                    ? "bg-[#635FC7] text-white rounded-r-full"
-                    : "text-[#828FA3]"
-                }`}
-                onClick={() => changePage(button)}
-              >
-                <img
-                  src={currentPage === button ? fluentActive : fluentDisabled}
-                  alt="icon"
-                  className="select-none"
-                />
-                {button}
-              </li>
-            ))}
+          {boards.map((board) => (
+            <li
+              key={board.id}
+              className={`text-[15px] cursor-pointer py-4 pl-8 font-bold capitalize flex gap-4 items-center ${
+                currentPage === board.id
+                  ? "bg-[#635FC7] text-white rounded-r-full"
+                  : "text-[#828FA3]"
+              }`}
+              onClick={() => setCurrentPage(board.id)}
+            >
+              <img
+                src={currentPage === board.id ? fluentActive : fluentDisabled}
+                alt="icon"
+                className="select-none"
+              />
+              {board.title}
+            </li>
+          ))}
 
             <li
               onClick={() => setActiveModal("createBoard")}

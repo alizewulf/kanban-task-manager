@@ -7,24 +7,64 @@ import MainContent from "./components/layout/MainContent"
 import CreateBoard from "./components/modals/CreateBoard"
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState("Platform Launch")
-
   const [activeModal, setActiveModal] = useState(null)
-
+  
   const [boards, setBoards] = useState([
-    "Platform Launch",
-    "Marketing Plan",
-    "Roadmap",
+    {
+      id: "1",
+      title: "Platform Launch",
+      columns: [
+        {
+          id: "c1",
+          title: "Todo",
+          tasks: []
+        },
+        {
+          id: "c2",
+          title: "Doing",
+          tasks: []
+        }
+      ]
+    },
+    {
+      id: "2",
+      title: "Marketing Plan",
+      columns: [
+        {
+          id: "c1",
+          title: "Todo",
+          tasks: []
+        },
+        {
+          id: "c2",
+          title: "Doing",
+          tasks: []
+        }
+      ]
+    },
+    {
+      id: "3",
+      title: "Roadmap",
+      columns: [
+        {
+          id: "c1",
+          title: "Todo",
+          tasks: []
+        },
+        {
+          id: "c2",
+          title: "Doing",
+          tasks: []
+        }
+      ]
+    }
   ])
-
-  const [columns, setColumns] = useState([])
-
-  // TASK MODAL STATE
+  const [currentPage, setCurrentPage] = useState(() => boards[0]?.id)
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false)
   const [activeColumnId, setActiveColumnId] = useState(null)
 
-  function handleCreateBoard(boardName) {
-    setBoards(prev => [...prev, boardName])
+  function handleCreateBoard(newBoard) {
+    setBoards(prev => [...prev, newBoard])
   }
 
   function openAddTask(columnId) {
@@ -32,18 +72,29 @@ export default function App() {
     setIsTaskModalOpen(true)
   }
 
-  function addTask(columnId, task) {
-    setColumns(prev =>
-      prev.map(col =>
-        col.id === columnId
+  function addTask(boardId, columnId, task) {
+    setBoards(prev =>
+      prev.map(board =>
+        board.id === boardId
           ? {
-              ...col,
-              tasks: [...col.tasks, task]
+              ...board,
+              columns: board.columns.map(col =>
+                col.id === columnId
+                  ? {
+                      ...col,
+                      tasks: [...col.tasks, task]
+                    }
+                  : col
+              )
             }
-          : col
+          : board
       )
     )
   }
+
+  const activeBoard = boards.find(
+    board => board.id === currentPage
+  )
 
   return (
     <div className="flex h-screen">
@@ -58,21 +109,18 @@ export default function App() {
       <div className="flex flex-col flex-1">
 
         <Header
-          title={currentPage}
+          activeBoard={activeBoard}
           setIsTaskModalOpen={setIsTaskModalOpen}
         />
 
         <MainContent
-          columns={columns}
-          setColumns={setColumns}
+          board={activeBoard}
           setActiveModal={setActiveModal}
           activeModal={activeModal}
-
           isTaskModalOpen={isTaskModalOpen}
           setIsTaskModalOpen={setIsTaskModalOpen}
           activeColumnId={activeColumnId}
           openAddTask={openAddTask}
-
           addTask={addTask}
         />
 

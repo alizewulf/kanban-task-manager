@@ -1,27 +1,43 @@
 import { useState } from "react";
 import BaseInput from "../common/Input";
+import removeTask from '../../assets/X-icon.svg'
 import LightBtn from "../common/Button";
 const inputStyle = "h-10 outline-0 px-3 rounded-sm border-[#828FA3]/25 placeholder:py-2.25 placeholder:pl-4 border-2 text-[13px]";
 function CreateBoard({ onCreateBoard, setActiveModal, boards }) {
   const [title, setTitle] = useState("");
-  const [columns, setColumns] = useState(["Todo", "Doing"]);
-  function handleSubmit() {
+  const [columns, setColumns] = useState([
+    { id: crypto.randomUUID(), title: "Todo" },
+    { id: crypto.randomUUID(), title: "Doing" }
+  ]);
+    function handleSubmit() {
     const normalizedTitle = title.trim()
 
     if (!normalizedTitle) return
 
     const exists = boards.some(
-      (board) => board.toLowerCase() === normalizedTitle.toLowerCase()
+      (board) =>
+        board.title.toLowerCase() === normalizedTitle.toLowerCase()
     )
 
     if (exists) return
 
-    onCreateBoard(normalizedTitle)
-    setActiveModal(null)
+    onCreateBoard({
+      id: crypto.randomUUID(),
+      title: normalizedTitle,
+      columns: structuredClone(columns)
+    })    
+setActiveModal(null)
   }
+
   function addColumn() {
-    setColumns([...columns, ""]);
+    setColumns([
+      ...columns,
+      { id: crypto.randomUUID(), title: "" }
+    ])
   }
+  function removeColumn(id) {
+    setColumns(columns.filter(col => col.id !== id))
+  }  
   return (
     <div
       onClick={() => setActiveModal(null)}
@@ -46,18 +62,28 @@ function CreateBoard({ onCreateBoard, setActiveModal, boards }) {
             Columns
           </p>
           <div className="flex flex-col gap-3">
-            {columns.map((col, index) => (
+          {columns.map((col, index) => (
+            <div key={col.id} className="flex items-center gap-4">
               <input
-                key={index}
-                value={col}
+                value={col.title}
                 onChange={(e) => {
                   const newCols = [...columns];
-                  newCols[index] = e.target.value;
+                  newCols[index] = {
+                    ...newCols[index],
+                    title: e.target.value
+                  };
                   setColumns(newCols);
                 }}
-                className={inputStyle}
+                className={inputStyle + " flex-1"}
               />
-            ))}
+
+              <button
+                onClick={() => removeColumn(col.id)}
+              >
+              <img src={removeTask} alt="removeTask icon" />
+              </button>
+            </div>
+          ))}
             <LightBtn
               variant="secondary"
               children="+ Add New Column"
