@@ -2,6 +2,7 @@ import { useState } from "react";
 import BaseInput from "../common/Input";
 import removeTask from '../../assets/X-icon.svg'
 import LightBtn from "../common/Button";
+import { createColumnUtil } from '../utils/createColumnUtil'
 const inputStyle = "h-10 outline-0 px-3 rounded-sm border-[#828FA3]/25 placeholder:py-2.25 placeholder:pl-4 border-2 text-[13px]";
 function CreateBoard({ onCreateBoard, setActiveModal, boards }) {
   const [title, setTitle] = useState("");
@@ -10,24 +11,27 @@ function CreateBoard({ onCreateBoard, setActiveModal, boards }) {
     { id: crypto.randomUUID(), title: "Doing" }
   ]);
     function handleSubmit() {
-    const normalizedTitle = title.trim()
+      const normalizedTitle = title.trim()
 
-    if (!normalizedTitle) return
+      if (!normalizedTitle) return
 
-    const exists = boards.some(
-      (board) =>
-        board.title.toLowerCase() === normalizedTitle.toLowerCase()
-    )
+      const exists = boards.some(
+        board =>
+          board.title.toLowerCase() === normalizedTitle.toLowerCase()
+      )
 
-    if (exists) return
+      if (exists) return
 
-    onCreateBoard({
-      id: crypto.randomUUID(),
-      title: normalizedTitle,
-      columns: structuredClone(columns)
-    })    
-setActiveModal(null)
-  }
+      onCreateBoard({
+        id: crypto.randomUUID(),
+        title: normalizedTitle,
+        columns: columns.map(col =>
+          createColumnUtil(col.title)
+        )
+      })
+
+      setActiveModal(null)
+    }
 
   function addColumn() {
     setColumns([
