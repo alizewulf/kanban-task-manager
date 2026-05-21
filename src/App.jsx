@@ -14,28 +14,28 @@ export default function App() {
     id: "1",
     title: "Platform Launch",
     columns: [
-      createColumnUtil("Todo", "c1"),
-      createColumnUtil("Doing", "c2")
+      createColumnUtil("Todo"),
+      createColumnUtil("Doing")
     ]
   },
   {
     id: "2",
     title: "Marketing Plan",
     columns: [
-      createColumnUtil("Todo", "c1"),
-      createColumnUtil("Doing", "c2")
+      createColumnUtil("Todo"),
+      createColumnUtil("Doing")
     ]
   },
   {
     id: "3",
     title: "Roadmap",
     columns: [
-      createColumnUtil("Todo", "c1"),
-      createColumnUtil("Doing", "c2")
+      createColumnUtil("Todo"),
+      createColumnUtil("Doing")
     ]
   }
 ])
-  const [currentPage, setCurrentPage] = useState(() => boards[0]?.id)
+  const [currentPage, setCurrentPage] = useState("1")
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false)
   const [activeColumnId, setActiveColumnId] = useState(null)
 
@@ -62,6 +62,19 @@ export default function App() {
                     }
                   : col
               )
+            }
+          : board
+      )
+    )
+  }
+
+  function addColumn(boardId, column) {
+    setBoards(prev =>
+      prev.map(board =>
+        board.id === boardId
+          ? {
+              ...board,
+              columns: [...board.columns, column]
             }
           : board
       )
@@ -98,6 +111,7 @@ export default function App() {
           activeColumnId={activeColumnId}
           openAddTask={openAddTask}
           addTask={addTask}
+          addColumn={addColumn}
         />
 
       </div>

@@ -11,7 +11,8 @@ function MainContent({
   setIsTaskModalOpen,
   activeColumnId,
   openAddTask,
-  addTask
+  addTask,
+  addColumn
 }) {
   if (!board) {
     return (
@@ -36,7 +37,7 @@ function MainContent({
         <CreateColumn
           setActiveModal={setActiveModal}
           onCreateColumn={(column) => {
-            // временно без setBoards
+            addColumn(board.id, column)
           }}
         />
       )}

@@ -40,9 +40,8 @@ function AddTask({ setIsOpen, onCreateTask, columns, activeColumnId }) {
 
   function handleCreate() {
     if (!title.trim()) return
-    console.log("onCreateTask:", onCreateTask)
     const task = {
-      id: Date.now(),
+      id: crypto.randomUUID(),
       title,
       description,
       subtasks
