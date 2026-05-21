@@ -16,14 +16,14 @@ function MainContent({
 }) {
   if (!board) {
     return (
-      <main className="bg-[#E4EBFA] flex flex-1">
+      <main className="bg-[#E4EBFA] flex flex-1 overflow-x-auto">
         <EmptyState setActiveModal={setActiveModal} />
       </main>
     )
   }
 
   return (
-    <main className="bg-[#E4EBFA] flex flex-1">
+    <main className="bg-[#E4EBFA] flex flex-1 overflow-x-auto">
 
       {board.columns.length === 0 ? (
         <EmptyState setActiveModal={setActiveModal} />
