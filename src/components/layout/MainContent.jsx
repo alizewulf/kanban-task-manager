@@ -30,6 +30,7 @@ function MainContent({
       ) : (
         <Board
           columns={board.columns}
+          setActiveModal={setActiveModal}
         />
       )}
 
