@@ -85,8 +85,8 @@ export default function App() {
       <div className="flex flex-col flex-1">
 
         <Header
-          activeBoard={activeBoard}
-          setIsTaskModalOpen={setIsTaskModalOpen}
+            activeBoard={activeBoard}
+            setIsTaskModalOpen={setIsTaskModalOpen}
         />
 
         <MainContent

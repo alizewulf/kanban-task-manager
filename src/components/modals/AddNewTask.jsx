@@ -1,15 +1,15 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import LightBtn from "../common/Button"
 import BaseInput, { baseInputClass, baseLabelClass } from "../common/Input"
 
-function AddTask({ setIsOpen, onCreateTask, columns }) {
+function AddTask({ setIsOpen, onCreateTask, columns, activeColumnId }) {
   const safeColumns = columns || []
 
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
 
   const [selectedColumn, setSelectedColumn] = useState(
-    safeColumns[0]?.id || ""
+    activeColumnId || safeColumns[0]?.id || ""
   )
 
   const [subtasks, setSubtasks] = useState([
@@ -17,6 +17,12 @@ function AddTask({ setIsOpen, onCreateTask, columns }) {
     { id: 2, value: "" }
   ])
 
+    useEffect(() => {
+    if (!selectedColumn && safeColumns.length > 0) {
+      setSelectedColumn(safeColumns[0].id)
+    }
+  }, [safeColumns])
+  
   function addSubtask() {
     setSubtasks(prev => [
       ...prev,

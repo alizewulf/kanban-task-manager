@@ -29,7 +29,6 @@ function MainContent({
       ) : (
         <Board
           columns={board.columns}
-          onOpenAddTask={openAddTask}
         />
       )}
 
@@ -45,7 +44,9 @@ function MainContent({
       {isTaskModalOpen && (
         <AddTask
           setIsOpen={setIsTaskModalOpen}
-          onCreateTask={addTask}
+          onCreateTask={(columnId, task) =>
+            addTask(board.id, columnId, task)
+          }
           columns={board.columns}
           activeColumnId={activeColumnId}
         />
