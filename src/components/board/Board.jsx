@@ -10,13 +10,10 @@ function Board({ columns, setActiveModal }) {
           column={col}
         />
       ))}
-      <div className="flex flex-col gap-4 bg-[#F4F7FD] rounded-[12px] p-4 min-w-[280px] h-fit justify-center items-center">
-        <LightBtn
-          variant="secondary"
-          onClick={() => setActiveModal("createColumn")}
-        >
-          + Add New Column
-        </LightBtn>
+      <div className="flex flex-col gap-4 shrink-0 bg-gradient-to-b from-[#E9EFFA] to-[#E9EFFA]/50 h-full justify-center items-center">
+        <button className="px-[55.5px] capitalize font-bold text-[24px] text-[#828FA3]" onClick={() => setActiveModal("createColumn")}>
+          + new column
+        </button>
       </div>
     </div>
   )

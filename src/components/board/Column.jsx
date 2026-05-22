@@ -1,12 +1,3 @@
-// const colors = ["#49C4E5", "#8471F2", "#67E2AE", "#FF7A59"]
-
-// function getColorById(id) {
-//   let sum = 0
-//   for (let i = 0; i < id.length; i++) {
-//     sum += id.charCodeAt(i)
-//   }
-//   return colors[sum % colors.length]
-// }
 function Column({ column }) {
   return (
     <div className="flex flex-col gap-4 bg-[#F4F7FD] rounded-[12px] p-4 min-w-[280px]">
