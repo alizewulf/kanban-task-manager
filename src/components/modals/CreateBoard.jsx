@@ -1,10 +1,13 @@
 import { useState } from "react";
+import Modal from "../common/Modal";
 import BaseInput from "../common/Input";
 import removeTask from '../../assets/X-icon.svg'
 import LightBtn from "../common/Button";
 import { createColumnUtil } from '../utils/createColumnUtil'
 const inputStyle = "h-10 outline-0 px-3 rounded-sm border-[#828FA3]/25 placeholder:py-2.25 placeholder:pl-4 border-2 text-[13px]";
-function CreateBoard({ onCreateBoard, setActiveModal, boards }) {
+function CreateBoard({ onCreateBoard, theme, setActiveModal, boards }) {
+
+  const isDark = theme === "dark"
   const [title, setTitle] = useState("");
   const [columns, setColumns] = useState([
     { id: crypto.randomUUID(), title: "Todo" },
@@ -43,14 +46,7 @@ function CreateBoard({ onCreateBoard, setActiveModal, boards }) {
     setColumns(columns.filter(col => col.id !== id))
   }  
   return (
-    <div
-      onClick={() => setActiveModal(null)}
-      className="absolute inset-0 flex items-center justify-center bg-[#000000]/50"
-    >
-      <div
-        onClick={(e) => e.stopPropagation()}
-        className="bg-white px-8 py-6 flex flex-col gap-6 rounded-xl w-[400px]"
-      >
+    <Modal onClose={() => setActiveModal(null)} className={`${isDark ? "bg-[#2B2C37] text-white" : "bg-white"} px-8 py-6 flex flex-col gap-6 rounded-xl w-[400px]`}>
         <h2 className="text-lg font-bold">Add New Board</h2>
         <div className="flex flex-col gap-2">
           <BaseInput
@@ -58,16 +54,17 @@ function CreateBoard({ onCreateBoard, setActiveModal, boards }) {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="e.g. Todo"
+            labelClass={`${isDark? "text-white" : ""}`}
             className="gap-2"
           />
         </div>
         <div className="flex flex-col gap-2">
-          <p className="text-[12px] font-bold text-[#828FA3] capitalize">
+          <p className={`text-[12px] font-bold ${isDark? "text-white" : "text-[#828FA3]"} capitalize`}>
             Columns
           </p>
           <div className="flex flex-col gap-3">
           {columns.map((col, index) => (
-            <div key={col.id} className="flex items-center gap-4">
+            <div key={col.id} className={`flex items-center gap-4 ${isDark? "text-white" : ""}`}>
               <input
                 value={col.title}
                 onChange={(e) => {
@@ -83,6 +80,7 @@ function CreateBoard({ onCreateBoard, setActiveModal, boards }) {
 
               <button
                 onClick={() => removeColumn(col.id)}
+                className="cursor-pointer"
               >
               <img src={removeTask} alt="removeTask icon" />
               </button>
@@ -92,6 +90,7 @@ function CreateBoard({ onCreateBoard, setActiveModal, boards }) {
               variant="secondary"
               children="+ Add New Column"
               onClick={addColumn}
+              customClass={isDark? "bg-white": ""}
             />
           </div>
         </div>
@@ -103,8 +102,7 @@ function CreateBoard({ onCreateBoard, setActiveModal, boards }) {
             Create New Board
           </button>
         </div>
-      </div>
-    </div>
+    </Modal>
   );
 }
 

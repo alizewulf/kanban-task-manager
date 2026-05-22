@@ -1,12 +1,12 @@
-import logoLight from "../../assets/kanbanLogo_onLight.svg";
-import logoDark from "../../assets/kanbanLogo_onDark.svg"
-import fluentActive from "../../assets/fluent-active.svg";
-import fluentDashboard from "../../assets/fluent-dashboard.svg";
-import fluentDisabled from "../../assets/fluent-disabled.svg";
-import sun from "../../assets/sun.svg";
-import moon from "../../assets/moon.svg";
-import showSideBarEye from "../../assets/hideSideBarEye.svg";
-import hideSideBarEye from "../../assets/showSideBarEye.svg";
+import logoLight from "../../../assets/kanbanLogo_onLight.svg";
+import logoDark from "../../../assets/kanbanLogo_onDark.svg"
+import fluentActive from "../../../assets/fluent-active.svg";
+import fluentDashboard from "../../../assets/fluent-dashboard.svg";
+import fluentDisabled from "../../../assets/fluent-disabled.svg";
+import sun from "../../../assets/sun.svg";
+import moon from "../../../assets/moon.svg";
+import showSideBarEye from "../../../assets/hideSideBarEye.svg";
+import hideSideBarEye from "../../../assets/showSideBarEye.svg";
 import { useState } from "react";
 
 function SideBar({

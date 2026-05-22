@@ -1,4 +1,4 @@
-import LightBtn from "../common/Button"
+import LightBtn from "../../common/Button"
 
 function EmptyState({ setActiveModal }) {
   return (

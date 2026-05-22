@@ -1,11 +1,12 @@
 import { useState } from "react"
-import LightBtn from "../common/Button"
-import BaseInput from "../common/Input"
-import { createColumnUtil } from "../utils/createColumnUtil"
+import Modal from "../../common/Modal"
+import LightBtn from "../../common/Button"
+import BaseInput from "../../common/Input"
+import { createColumnUtil } from "../../utils/createColumnUtil"
 
-function CreateColumn({ setActiveModal, onCreateColumn }) {
+function CreateColumn({ setActiveModal, theme, onCreateColumn }) {
   const [title, setTitle] = useState("")
-
+  const isDark = theme === "dark"
   function handleCreate() {
     if (!title.trim()) return
 
@@ -16,19 +17,13 @@ function CreateColumn({ setActiveModal, onCreateColumn }) {
   }
 
   return (
-    <div
-      onClick={() => setActiveModal(null)}
-      className="absolute inset-0 flex items-center justify-center bg-[#000000]/50"
-    >
-      <div
-        onClick={(e) => e.stopPropagation()}
-        className="bg-white px-8 py-6 flex flex-col gap-6 rounded-xl w-[400px]"
-      >
-        <h2 className="text-lg font-bold">Create column</h2>
+    <Modal onClose={() => setActiveModal(null)} className={`${isDark? "bg-[#2B2C37]" : "bg-white"} px-8 py-6 flex flex-col gap-6 rounded-xl w-[400px]`}>
+        <h2 className={`${isDark? "text-white" : "text-black"} text-lg font-bold`}>Create column</h2>
 
         <BaseInput
           title="Create Column"
           value={title}
+          inputClass={`${isDark? "text-white" : ""}`}
           onChange={(e) => setTitle(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
@@ -44,8 +39,7 @@ function CreateColumn({ setActiveModal, onCreateColumn }) {
         >
           Create
         </LightBtn>
-      </div>
-    </div>
+    </Modal>
   )
 }
 

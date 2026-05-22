@@ -1,7 +1,7 @@
-import CreateColumn from "../modals/CreateColumn"
-import EmptyState from "../board/EmptyState"
-import Board from "../board/Board"
-import AddTask from "../modals/AddNewTask"
+import CreateColumn from "./CreateColumn"
+import EmptyState from "./EmptyState"
+import Board from "./Board"
+import AddTask from "./AddNewTask"
 
 function MainContent({
   board,
@@ -10,7 +10,6 @@ function MainContent({
   isTaskModalOpen,
   setIsTaskModalOpen,
   activeColumnId,
-  openAddTask,
   addTask,
   addColumn,
   theme,
@@ -19,14 +18,14 @@ function MainContent({
 
   if (!board) {
     return (
-      <main className={`${isDark ? "bg-[#0B0C10]" : "bg-[#E4EBFA]"} flex flex-1 overflow-hidden overflow-x-auto`}>
+      <main className={`${isDark ? "bg-[#20212C]" : "bg-[#E4EBFA]"} flex flex-1 overflow-hidden overflow-x-auto`}>
         <EmptyState setActiveModal={setActiveModal} />
       </main>
     )
   }
 
   return (
-    <main className={`${isDark ? "bg-[#0B0C10]" : "bg-[#E4EBFA]"} flex flex-1 overflow-hidden overflow-x-auto`}>
+    <main className={`${isDark ? "bg-[#20212C]" : "bg-[#E4EBFA]"} flex flex-1 overflow-hidden overflow-x-auto`}>
 
       {board.columns.length === 0 ? (
         <EmptyState setActiveModal={setActiveModal} />
@@ -41,6 +40,7 @@ function MainContent({
       {activeModal === "createColumn" && (
         <CreateColumn
           setActiveModal={setActiveModal}
+          theme={theme}
           onCreateColumn={(column) => {
             addColumn(board.id, column)
           }}
@@ -53,6 +53,7 @@ function MainContent({
           onCreateTask={(columnId, task) =>
             addTask(board.id, columnId, task)
           }
+          theme={theme}
           columns={board.columns}
           activeColumnId={activeColumnId}
         />

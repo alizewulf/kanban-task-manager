@@ -51,18 +51,9 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem("currentPage", currentPage);
   }, [currentPage]);
-  useEffect(() => {
-    if (!boards.find((b) => b.id === currentPage) && boards.length) {
-      setCurrentPage(boards[0].id);
-    }
-  }, [boards, currentPage]);
+
   function handleCreateBoard(newBoard) {
     setBoards((prev) => [...prev, newBoard]);
-  }
-
-  function openAddTask(columnId) {
-    setActiveColumnId(columnId);
-    setIsTaskModalOpen(true);
   }
 
   function addTask(boardId, columnId, task) {
@@ -126,6 +117,8 @@ if (!activeBoard) {
         <Header
           activeBoard={activeBoard}
           setIsTaskModalOpen={setIsTaskModalOpen}
+          toggleTheme={toggleTheme}
+          theme={theme}
         />
 
         <MainContent
@@ -135,7 +128,6 @@ if (!activeBoard) {
           isTaskModalOpen={isTaskModalOpen}
           setIsTaskModalOpen={setIsTaskModalOpen}
           activeColumnId={activeColumnId}
-          openAddTask={openAddTask}
           addTask={addTask}
           addColumn={addColumn}
           theme={theme}
@@ -147,6 +139,8 @@ if (!activeBoard) {
           setActiveModal={setActiveModal}
           onCreateBoard={handleCreateBoard}
           boards={boards}
+          theme={theme}
+          toggleTheme={toggleTheme}
         />
       )}
     </div>

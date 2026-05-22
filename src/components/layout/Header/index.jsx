@@ -1,9 +1,10 @@
-import dots from '../../assets/3dots.svg'
-import LightBtn from '../common/Button'
+import dots from '../../../assets/3dots.svg'
+import LightBtn from '../../common/Button'
 
-function Header({ activeBoard, setIsTaskModalOpen }) {
+function Header({ activeBoard, setIsTaskModalOpen,toggleTheme, theme }) {
+  const isDark = theme === "dark"
   return (
-    <header className="flex justify-between items-center pr-6 pl-8 pb-7 pt-5 border-b-2 border-b-[#E4EBFA]">
+    <header className={`flex justify-between items-center pr-6 pl-8 pb-7 pt-5 ${isDark? "text-white bg-[#2B2C37]" : "border-b-2 border-b-[#E4EBFA]"}`}>
       <h1 className="text-[24px] font-bold capitalize">
         {activeBoard.title}
       </h1>
