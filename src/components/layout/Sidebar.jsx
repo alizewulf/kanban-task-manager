@@ -1,35 +1,46 @@
-import logo from "../../assets/kanbanLogo.svg";
+import logoLight from "../../assets/kanbanLogo_onLight.svg";
+import logoDark from "../../assets/kanbanLogo_onDark.svg"
 import fluentActive from "../../assets/fluent-active.svg";
 import fluentDashboard from "../../assets/fluent-dashboard.svg";
 import fluentDisabled from "../../assets/fluent-disabled.svg";
 import sun from "../../assets/sun.svg";
 import moon from "../../assets/moon.svg";
 import showSideBarEye from "../../assets/hideSideBarEye.svg";
-import hideSideBarEye from '../../assets/showSideBarEye.svg'
+import hideSideBarEye from "../../assets/showSideBarEye.svg";
 import { useState } from "react";
 
-function SideBar({ currentPage, setCurrentPage, boards, setActiveModal }) {
-  const [isDark, setIsDark] = useState(false);
-  const [sidebarStatus, changeSidebarStatus] = useState(false)
-  const changePage = (button) => {
-    setCurrentPage(button);
-  };
+function SideBar({
+  currentPage,
+  setCurrentPage,
+  boards,
+  setActiveModal,
+  theme,
+  toggleTheme,
+}) {
+  const [sidebarStatus, setSidebarStatus] = useState(false);
+
+  const isDark = theme === "dark";
 
   function sidebarChange() {
-    changeSidebarStatus(prev => !prev)
+    setSidebarStatus((prev) => !prev);
   }
 
   if (sidebarStatus) {
     return (
-      <button className="absolute bottom-8 left-0 flex justify-center items-center py-4.75 pl-4.5 pr-5.5 rounded-r-full bg-[#635FC7]" onClick={sidebarChange}><img className="w-4 h-2.5" src={hideSideBarEye}/></button>
-    )
-  } else {
+      <button
+        className="absolute bottom-8 left-0 flex justify-center items-center py-4 pl-4 pr-5 rounded-r-full bg-[#635FC7]"
+        onClick={sidebarChange}
+      >
+        <img className="w-4 h-2.5" src={hideSideBarEye} alt="show sidebar" />
+      </button>
+    );
+  }
+
   return (
-    <aside className="md:flex flex-col h-screen hidden justify-between border-r-[#E4EBFA] border-r-2">
-      
+    <aside className={`md:flex flex-col w-[250px] h-screen hidden justify-between border-r-2 ${isDark ? "border-r-[#3E3F4E] bg-[#2B2C37]" : "border-r-[#E4EBFA]"}`}>
       <div className="flex-1">
-        <div className="py-8 px-8.5 select-none">
-          <img src={logo} alt="LOGO" />
+        <div className="py-8 px-8 select-none">
+          {isDark? <img src={logoDark} alt="Light Logo" /> : <img src={logoLight} alt="Light Logo" />}
         </div>
 
         <div className="flex flex-col gap-5">
@@ -38,30 +49,33 @@ function SideBar({ currentPage, setCurrentPage, boards, setActiveModal }) {
           </span>
 
           <ul>
-          {boards.map((board) => (
-            <li
-              key={board.id}
-              className={`text-[15px] cursor-pointer py-4 pl-8 font-bold capitalize flex gap-4 items-center ${
-                currentPage === board.id
-                  ? "bg-[#635FC7] text-white rounded-r-full"
-                  : "text-[#828FA3]"
-              }`}
-              onClick={() => setCurrentPage(board.id)}
-            >
-              <img
-                src={currentPage === board.id ? fluentActive : fluentDisabled}
-                alt="icon"
-                className="select-none"
-              />
-              {board.title}
-            </li>
-          ))}
+            {boards.map((board) => (
+              <li
+                key={board.id}
+                className={`text-[15px] cursor-pointer py-4 pl-8 font-bold capitalize flex gap-4 items-center ${
+                  currentPage === board.id
+                    ? "bg-[#635FC7] text-white rounded-r-full"
+                    : isDark ? "text-[#A8A9B3]" : "text-[#828FA3]" 
+                }`}
+                onClick={() => setCurrentPage(board.id)}
+              >
+                <img
+                  src={
+                    currentPage === board.id
+                      ? fluentActive
+                      : fluentDisabled
+                  }
+                  alt="icon"
+                />
+                {board.title}
+              </li>
+            ))}
 
             <li
               onClick={() => setActiveModal("createBoard")}
               className="text-[#635FC7] text-[15px] py-4 pl-8 capitalize cursor-pointer flex gap-4 font-bold items-center"
             >
-              <img src={fluentDashboard} className="select-none" alt="dashboard icon" />
+              <img src={fluentDashboard} alt="dashboard icon" />
               + Create New Board
             </li>
           </ul>
@@ -69,23 +83,24 @@ function SideBar({ currentPage, setCurrentPage, boards, setActiveModal }) {
       </div>
 
       <div className="flex flex-col gap-4 px-6 mb-8">
-        <div className="bg-[#F4F7FD] px-6 rounded-xl">
+        <div className={`${isDark ? "bg-[#20212C]" : "bg-[#F4F7FD]"} px-6 rounded-xl`}>
           <div className="py-3.5 flex gap-6 items-center">
-            
             <img
               src={sun}
               alt="Light mode"
-              className={`select-none cursor-pointer transition-opacity ${
+              className={`cursor-pointer transition-opacity ${
                 isDark ? "opacity-40" : "opacity-100"
               }`}
-              onClick={() => setIsDark(false)}
+              onClick={() => isDark && toggleTheme()}
             />
 
             <button
               role="switch"
               aria-checked={isDark}
-              onClick={() => setIsDark(!isDark)}
-              className={`relative w-14 h-7 rounded-full transition-colors ${
+              onClick={() => {
+                toggleTheme()
+              }}
+              className={`relative w-14 h-7 rounded-full cursor-pointer transition-colors ${
                 isDark ? "bg-[#635FC7]" : "bg-[#828FA3]"
               }`}
             >
@@ -99,22 +114,24 @@ function SideBar({ currentPage, setCurrentPage, boards, setActiveModal }) {
             <img
               src={moon}
               alt="Dark mode"
-              className={`select-none cursor-pointer transition-opacity ${
+              className={`cursor-pointer transition-opacity ${
                 isDark ? "opacity-100" : "opacity-40"
               }`}
-              onClick={() => setIsDark(true)}
+              onClick={() => !isDark && toggleTheme()}
             />
           </div>
         </div>
 
-        <button onClick={sidebarChange} className="flex gap-3.5 font-bold text-[15px] text-[#828FA3] items-center">
-          <img src={showSideBarEye} className="select-none" alt="eye" />
+        <button
+          onClick={sidebarChange}
+          className="flex gap-3.5 font-bold text-[15px] text-[#828FA3] items-center"
+        >
+          <img src={showSideBarEye} alt="eye" />
           Hide Sidebar
         </button>
       </div>
     </aside>
   );
-  }
 }
 
 export default SideBar;

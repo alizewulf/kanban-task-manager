@@ -12,18 +12,21 @@ function MainContent({
   activeColumnId,
   openAddTask,
   addTask,
-  addColumn
+  addColumn,
+  theme,
 }) {
+  const isDark = theme === "dark";
+
   if (!board) {
     return (
-      <main className="bg-[#E4EBFA] flex flex-1 overflow-hidden overflow-x-auto">
+      <main className={`${isDark ? "bg-[#0B0C10]" : "bg-[#E4EBFA]"} flex flex-1 overflow-hidden overflow-x-auto`}>
         <EmptyState setActiveModal={setActiveModal} />
       </main>
     )
   }
 
   return (
-    <main className="bg-[#E4EBFA] flex flex-1 overflow-hidden overflow-x-auto">
+    <main className={`${isDark ? "bg-[#0B0C10]" : "bg-[#E4EBFA]"} flex flex-1 overflow-hidden overflow-x-auto`}>
 
       {board.columns.length === 0 ? (
         <EmptyState setActiveModal={setActiveModal} />
@@ -31,6 +34,7 @@ function MainContent({
         <Board
           columns={board.columns}
           setActiveModal={setActiveModal}
+          theme={theme}
         />
       )}
 
