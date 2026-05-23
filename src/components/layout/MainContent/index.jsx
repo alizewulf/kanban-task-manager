@@ -13,6 +13,14 @@ function MainContent({
   addTask,
   addColumn,
   theme,
+  updateTask,
+  moveTask,
+  openEditTask,
+  taskToEdit,
+  setTaskToEdit,
+  openDeleteTask,
+  taskToDelete,
+  setTaskToDelete,
 }) {
   const isDark = theme === "dark";
 
@@ -34,6 +42,11 @@ function MainContent({
           columns={board.columns}
           setActiveModal={setActiveModal}
           theme={theme}
+          boardId={board.id}
+          updateTask={updateTask}
+          moveTask={moveTask}
+          openEditTask={openEditTask}
+          openDeleteTask={openDeleteTask}
         />
       )}
 
@@ -53,6 +66,10 @@ function MainContent({
           onCreateTask={(columnId, task) =>
             addTask(board.id, columnId, task)
           }
+          boardId={board.id}
+          taskToEdit={taskToEdit}
+          setTaskToEdit={setTaskToEdit}
+          onUpdateTask={(columnId, taskId, updatedTask) => updateTask(board.id, columnId, taskId, updatedTask)}
           theme={theme}
           columns={board.columns}
           activeColumnId={activeColumnId}

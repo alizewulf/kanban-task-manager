@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react"
+import removeTask from '../../../assets/X-icon.svg'
 import Modal from "../../common/Modal"
 import LightBtn from "../../common/Button"
 import BaseInput, { baseInputClass, baseLabelClass } from "../../common/Input"
 
-function AddTask({ setIsOpen, onCreateTask, theme, columns, activeColumnId }) {
+function AddTask({ setIsOpen, onCreateTask, theme, columns, activeColumnId, boardId, taskToEdit, setTaskToEdit, onUpdateTask }) {
   const safeColumns = columns || []
   const isDark = theme === "dark"
   const [title, setTitle] = useState("")
@@ -14,20 +15,30 @@ function AddTask({ setIsOpen, onCreateTask, theme, columns, activeColumnId }) {
   )
 
   const [subtasks, setSubtasks] = useState([
-    { id: 1, value: "" },
-    { id: 2, value: "" }
+    { id: 1, value: "", isCompleted: false },
+    { id: 2, value: "", isCompleted: false }
   ])
+  const [errors, setErrors] = useState({})
 
     useEffect(() => {
     if (!selectedColumn && safeColumns.length > 0) {
       setSelectedColumn(safeColumns[0].id)
     }
   }, [safeColumns])
+
+    useEffect(() => {
+      if (taskToEdit) {
+        setTitle(taskToEdit.title || "")
+        setDescription(taskToEdit.description || "")
+        setSelectedColumn(taskToEdit.columnId || taskToEdit.column || activeColumnId || safeColumns[0]?.id || "")
+        setSubtasks((taskToEdit.subtasks || []).map(st => ({ id: st.id, value: st.value || "", isCompleted: !!st.isCompleted })))
+      }
+    }, [taskToEdit])
   
   function addSubtask() {
     setSubtasks(prev => [
       ...prev,
-      { id: Date.now(), value: "" }
+      { id: Date.now(), value: "", isCompleted: false }
     ])
   }
 
@@ -39,31 +50,57 @@ function AddTask({ setIsOpen, onCreateTask, theme, columns, activeColumnId }) {
     )
   }
 
+  function removeSubtask(id) {
+    setSubtasks(prev => prev.filter(st => st.id !== id))
+    setErrors(prev => {
+      const copy = { ...prev }
+      delete copy[id]
+      return copy
+    })
+  }
+
   function handleCreate() {
     if (!title.trim()) return
-    const task = {
-      id: crypto.randomUUID(),
-      title,
-      description,
-      subtasks
+    
+    const invalid = subtasks.filter(st => !st.value || !st.value.trim())
+    if (invalid.length) {
+      const err = {}
+      invalid.forEach(s => err[s.id] = "Subtask can't be empty")
+      setErrors(err)
+      return
     }
 
-    onCreateTask(selectedColumn, task)
+    const cleanSubtasks = subtasks.map(st => ({ id: st.id, value: st.value, isCompleted: !!st.isCompleted }))
+
+    if (taskToEdit) {
+      const updated = { ...taskToEdit, title, description, subtasks: cleanSubtasks }
+      if (onUpdateTask) onUpdateTask(selectedColumn, taskToEdit.id, updated)
+      if (setTaskToEdit) setTaskToEdit(null)
+    } else {
+      const task = {
+        id: crypto.randomUUID(),
+        title,
+        description,
+        subtasks: cleanSubtasks
+      }
+
+      onCreateTask(selectedColumn, task)
+    }
 
     setTitle("")
     setDescription("")
     setSubtasks([
-      { id: 1, value: "" },
-      { id: 2, value: "" }
+      { id: 1, value: "", isCompleted: false },
+      { id: 2, value: "", isCompleted: false }
     ])
-
+    setErrors({})
     setIsOpen(false)
   }
 
   return (
     <Modal onClose={() => setIsOpen(false)} className={`${isDark ? "bg-[#2B2C37]" : "bg-white"} px-8 py-6 flex flex-col gap-6 rounded-xl w-[400px]`}>
-        <h2 className={`${isDark? "text-white" : "text-black"} font-bold text-lg`}>
-          Add New Task
+        <h2 className={`${isDark? "text-white" : "text-black"} font-bold text-lg` }>
+          {taskToEdit ? 'Edit Task' : 'Add New Task'}
         </h2>
 
         <BaseInput
@@ -71,7 +108,7 @@ function AddTask({ setIsOpen, onCreateTask, theme, columns, activeColumnId }) {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           labelClass={`${isDark? "text-white" : ""}`}
-          inputClass={`${isDark? "placeholder:text-[#828FA3]" : ""}`}
+          inputClass={`${isDark? "text-white placeholder:text-[#828FA3]" : ""}`}
           placeholder="e.g. Take coffee break"
         />
 
@@ -84,7 +121,7 @@ function AddTask({ setIsOpen, onCreateTask, theme, columns, activeColumnId }) {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="e.g. Short break"
-            className={`${isDark ? "placeholder:text-[#828FA3]" : ""} h-24 px-3 pt-2 outline-0 rounded-sm border-[#828FA3]/25 border-2 text-[13px] resize-none`}
+            className={`${isDark ? "text-white placeholder:text-[#828FA3]" : ""} h-24 px-3 pt-2 outline-0 rounded-sm border-[#828FA3]/25 border-2 text-[13px] resize-none`}
           />
         </div>
 
@@ -93,15 +130,31 @@ function AddTask({ setIsOpen, onCreateTask, theme, columns, activeColumnId }) {
             Subtasks
 
             {subtasks.map(st => (
-              <input
-                key={st.id}
-                value={st.value}
-                onChange={(e) =>
-                  updateSubtask(st.id, e.target.value)
-                }
-                placeholder="e.g. Make Coffee"
-                className={`${baseInputClass} ${isDark? "text-[#828FA3]": ""}`}
-              />
+              <div key={st.id} className="relative flex items-center gap-2">
+                <input
+                  value={st.value}
+                  onChange={(e) => {
+                    updateSubtask(st.id, e.target.value)
+                    if (e.target.value && e.target.value.trim()) {
+                      setErrors(prev => {
+                        const c = { ...prev }
+                        delete c[st.id]
+                        return c
+                      })
+                    }
+                  }}
+                  placeholder="e.g. Make Coffee"
+                  className={`${baseInputClass} ${isDark? "text-white": ""} ${errors[st.id] ? "border-[#EA5555]" : ""} w-[300px]`}
+                />
+
+                <button type="button" onClick={() => removeSubtask(st.id)} className="flex h-10 w-10 items-center justify-center rounded-xl cursor-pointer duration-300 hover:bg-[#EA5555]/20">
+                  <img src={removeTask} alt="remove" className="w-4 h-4" />
+                </button>
+
+                {errors[st.id] && (
+                  <span className="absolute right-12 top-1/2 -translate-y-1/2 text-xs text-[#EA5555]">{errors[st.id]}</span>
+                )}
+              </div>
             ))}
           </label>
 
@@ -141,7 +194,7 @@ function AddTask({ setIsOpen, onCreateTask, theme, columns, activeColumnId }) {
           variant="primary"
           onClick={handleCreate}
         >
-          Create Task
+          {taskToEdit ? 'Save Changes' : 'Create Task'}
         </LightBtn>
     </Modal>
   )

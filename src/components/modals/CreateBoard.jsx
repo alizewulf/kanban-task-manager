@@ -77,7 +77,7 @@ function CreateBoard({ onCreateBoard, onUpdateBoard, theme, setActiveModal, boar
         </p>
         <div className="flex flex-col gap-3">
           {columns.map((col, index) => (
-            <div key={col.id} className={`flex items-center justify-between gap-4 ${isDark ? "text-white" : ""}`}>
+            <div key={col.id} className={`flex items-center gap-4 ${isDark ? "text-white" : ""}`}>
               <input
                 value={col.title}
                 onChange={(e) => {
@@ -88,7 +88,7 @@ function CreateBoard({ onCreateBoard, onUpdateBoard, theme, setActiveModal, boar
                   }
                   setColumns(newCols)
                 }}
-                className={inputStyle + " flex-1"}
+                className={inputStyle + " w-[300px]"}
               />
               <button
                 type="button"
@@ -102,7 +102,6 @@ function CreateBoard({ onCreateBoard, onUpdateBoard, theme, setActiveModal, boar
           <LightBtn
             variant="primary"
             onClick={addColumn}
-            customClass={isDark ? "bg-white" : ""}
           >
             + Add New Column
           </LightBtn>

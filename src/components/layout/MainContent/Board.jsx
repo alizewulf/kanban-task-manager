@@ -1,6 +1,6 @@
 import Column from "./Column";
 
-function Board({ columns, setActiveModal, theme }) {
+function Board({ columns, setActiveModal, theme, boardId, updateTask, moveTask, openEditTask, openDeleteTask }) {
   const isDark = theme === "dark";
 
   return (
@@ -8,7 +8,7 @@ function Board({ columns, setActiveModal, theme }) {
       className={`flex gap-4 items-start p-6 ${isDark ? "bg-[#20212C]" : "bg-transparent"} min-h-full`}
     >
       {columns.map((col) => (
-        <Column key={col.id} column={col} theme={theme}/>
+        <Column key={col.id} column={col} theme={theme} columns={columns} boardId={boardId} updateTask={updateTask} moveTask={moveTask} openEditTask={openEditTask} openDeleteTask={openDeleteTask} />
       ))}
 
       <div

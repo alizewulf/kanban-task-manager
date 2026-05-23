@@ -6,6 +6,7 @@ import Header from "./components/layout/Header";
 import MainContent from "./components/layout/MainContent";
 import CreateBoard from "./components/modals/CreateBoard";
 import DeleteBoard from "./components/modals/DeleteBoard";
+import DeleteTask from "./components/modals/DeleteTask";
 import { createColumnUtil } from "./components/utils/createColumnUtil";
 
 const DEFAULT_BOARDS = [
@@ -39,6 +40,8 @@ export default function App() {
 
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [activeColumnId, setActiveColumnId] = useState(null);
+  const [taskToEdit, setTaskToEdit] = useState(null);
+  const [taskToDelete, setTaskToDelete] = useState(null);
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", theme === "dark");
@@ -88,6 +91,75 @@ export default function App() {
           : board,
       ),
     );
+  }
+
+  function updateTask(boardId, columnId, taskId, updatedTask) {
+    setBoards(prev => prev.map(board => {
+      if (board.id !== boardId) return board
+      return {
+        ...board,
+        columns: board.columns.map(col => {
+          if (col.id !== columnId) return col
+          return {
+            ...col,
+            tasks: (col.tasks || []).map(t => t.id === taskId ? updatedTask : t)
+          }
+        })
+      }
+    }))
+  }
+
+  function moveTask(boardId, fromColumnId, toColumnId, taskId) {
+    setBoards(prev => prev.map(board => {
+      if (board.id !== boardId) return board
+
+      let movingTask = null
+
+      const newColumns = board.columns.map(col => {
+        if (col.id === fromColumnId) {
+          const remaining = (col.tasks || []).filter(t => {
+            if (t.id === taskId) {
+              movingTask = t
+              return false
+            }
+            return true
+          })
+          return { ...col, tasks: remaining }
+        }
+        return col
+      }).map(col => {
+        if (col.id === toColumnId && movingTask) {
+          return { ...col, tasks: [...(col.tasks || []), movingTask] }
+        }
+        return col
+      })
+
+      return { ...board, columns: newColumns }
+    }))
+  }
+
+  function openEditTask(task, columnId) {
+    setTaskToEdit({ ...task, columnId })
+    setActiveColumnId(columnId)
+    setIsTaskModalOpen(true)
+  }
+
+  function deleteTask(boardId, columnId, taskId) {
+    setBoards(prev => prev.map(board => {
+      if (board.id !== boardId) return board
+      return {
+        ...board,
+        columns: board.columns.map(col => {
+          if (col.id !== columnId) return col
+          return { ...col, tasks: (col.tasks || []).filter(t => t.id !== taskId) }
+        })
+      }
+    }))
+  }
+
+  function openDeleteTask(task, columnId) {
+    setTaskToDelete({ ...task, columnId })
+    setActiveModal('deleteTask')
   }
 
   function handleDeleteBoard(boardId) {
@@ -153,6 +225,14 @@ if (!activeBoard) {
           addTask={addTask}
           addColumn={addColumn}
           theme={theme}
+          updateTask={updateTask}
+          moveTask={moveTask}
+          openEditTask={openEditTask}
+          taskToEdit={taskToEdit}
+          setTaskToEdit={setTaskToEdit}
+          openDeleteTask={openDeleteTask}
+          taskToDelete={taskToDelete}
+          setTaskToDelete={setTaskToDelete}
         />
       </div>
 
@@ -172,6 +252,18 @@ if (!activeBoard) {
           setActiveModal={setActiveModal}
           onDeleteBoard={handleDeleteBoard}
           board={activeBoard}
+          theme={theme}
+        />
+      )}
+
+      {activeModal === 'deleteTask' && (
+        <DeleteTask
+          setActiveModal={setActiveModal}
+          onDeleteTask={(task) => {
+            deleteTask(activeBoard.id, task.columnId || task.column || '', task.id)
+            setTaskToDelete(null)
+          }}
+          task={taskToDelete}
           theme={theme}
         />
       )}

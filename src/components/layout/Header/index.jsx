@@ -36,7 +36,7 @@ function Header({ activeBoard, setActiveModal, onDeleteBoard, setIsTaskModalOpen
           <img
             src={dots}
             alt="3 dots"
-            className="cursor-pointer"
+            className="cursor-pointer w-7.5 p-3"
             onClick={() => setDropdownOpen((prev) => !prev)}
           />
 
