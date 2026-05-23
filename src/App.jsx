@@ -5,6 +5,7 @@ import SideBar from "./components/layout/Sidebar";
 import Header from "./components/layout/Header";
 import MainContent from "./components/layout/MainContent";
 import CreateBoard from "./components/modals/CreateBoard";
+import DeleteBoard from "./components/modals/DeleteBoard";
 import { createColumnUtil } from "./components/utils/createColumnUtil";
 
 const DEFAULT_BOARDS = [
@@ -88,11 +89,30 @@ export default function App() {
       ),
     );
   }
+
+  function handleDeleteBoard(boardId) {
+    setBoards((prev) => {
+      const nextBoards = prev.filter((board) => board.id !== boardId)
+      if (currentPage === boardId) {
+        setCurrentPage(nextBoards[0]?.id ?? "")
+      }
+      return nextBoards
+    })
+  }
+
+  function handleUpdateBoard(updatedBoard) {
+    setBoards((prev) =>
+      prev.map((board) =>
+        board.id === updatedBoard.id ? updatedBoard : board,
+      ),
+    )
+  }
+
   function toggleTheme() {
-  setTheme(prev => (prev === "dark" ? "light" : "dark"));
-}
-const activeBoard =
-  boards.find(b => b.id === currentPage) ?? null
+    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+  }
+
+  const activeBoard = boards.find((b) => b.id === currentPage) ?? null
 
 useEffect(() => {
   if (!activeBoard && boards.length) {
@@ -117,6 +137,8 @@ if (!activeBoard) {
         <Header
           activeBoard={activeBoard}
           setIsTaskModalOpen={setIsTaskModalOpen}
+          setActiveModal={setActiveModal}
+          onDeleteBoard={handleDeleteBoard}
           toggleTheme={toggleTheme}
           theme={theme}
         />
@@ -134,13 +156,23 @@ if (!activeBoard) {
         />
       </div>
 
-      {activeModal === "createBoard" && (
+      {(activeModal === "createBoard" || activeModal === "editBoard") && (
         <CreateBoard
           setActiveModal={setActiveModal}
           onCreateBoard={handleCreateBoard}
+          onUpdateBoard={handleUpdateBoard}
           boards={boards}
           theme={theme}
-          toggleTheme={toggleTheme}
+          boardToEdit={activeModal === "editBoard" ? activeBoard : null}
+        />
+      )}
+
+      {activeModal === "deleteBoard" && (
+        <DeleteBoard
+          setActiveModal={setActiveModal}
+          onDeleteBoard={handleDeleteBoard}
+          board={activeBoard}
+          theme={theme}
         />
       )}
     </div>
