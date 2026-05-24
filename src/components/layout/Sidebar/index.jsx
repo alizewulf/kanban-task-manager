@@ -37,7 +37,7 @@ function SideBar({
   }
 
   return (
-    <aside className={`md:flex flex-col w-[250px] h-screen hidden justify-between border-r-2 ${isDark ? "border-r-[#3E3F4E] bg-[#2B2C37]" : "border-r-[#E4EBFA]"}`}>
+    <aside className={`md:flex flex-col w-[250px] h-screen hidden justify-between border-r-2 transition-colors duration-300 ${isDark ? "border-r-[#3E3F4E] bg-[#2B2C37]" : "border-r-[#E4EBFA]"}`}>
       <div className="flex-1">
         <div className="py-8 px-8 select-none">
           {isDark? <img src={logoDark} alt="Light Logo" /> : <img src={logoLight} alt="Light Logo" />}
@@ -85,27 +85,27 @@ function SideBar({
       <div className="flex flex-col gap-4 px-6 mb-8">
         <div className={`${isDark ? "bg-[#20212C]" : "bg-[#F4F7FD]"} px-6 rounded-xl`}>
           <div className="py-3.5 flex gap-6 items-center">
-            <img
-              src={sun}
-              alt="Light mode"
-              className={`cursor-pointer transition-opacity ${
-                isDark ? "opacity-40" : "opacity-100"
-              }`}
-              onClick={() => isDark && toggleTheme()}
-            />
+              <img
+                src={sun}
+                alt="Light mode"
+                className={`cursor-pointer transition-opacity duration-300 ${
+                  isDark ? "opacity-40" : "opacity-100"
+                }`}
+                onClick={() => isDark && toggleTheme()}
+              />
 
-            <button
-              role="switch"
-              aria-checked={isDark}
-              onClick={() => {
-                toggleTheme()
-              }}
-              className={`relative w-14 h-7 rounded-full cursor-pointer transition-colors ${
-                isDark ? "bg-[#635FC7]" : "bg-[#828FA3]"
-              }`}
-            >
+              <button
+                role="switch"
+                aria-checked={isDark}
+                onClick={() => {
+                  toggleTheme()
+                }}
+                className={`relative w-14 h-7 rounded-full cursor-pointer transition-colors duration-300 ${
+                  isDark ? "bg-[#635FC7]" : "bg-[#828FA3]"
+                }`}
+              >
               <span
-                className={`absolute top-1 left-1 w-5 h-5 bg-white rounded-full shadow transition-transform ${
+                className={`absolute top-1 left-1 w-5 h-5 bg-white rounded-full shadow transition-transform duration-300 ${
                   isDark ? "translate-x-7" : "translate-x-0"
                 }`}
               />
@@ -114,7 +114,7 @@ function SideBar({
             <img
               src={moon}
               alt="Dark mode"
-              className={`cursor-pointer transition-opacity ${
+              className={`cursor-pointer transition-opacity duration-300 ${
                 isDark ? "opacity-100" : "opacity-40"
               }`}
               onClick={() => !isDark && toggleTheme()}

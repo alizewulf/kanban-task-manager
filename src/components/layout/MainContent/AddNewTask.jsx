@@ -60,12 +60,22 @@ function AddTask({ setIsOpen, onCreateTask, theme, columns, activeColumnId, boar
   }
 
   function handleCreate() {
-    if (!title.trim()) return
+    const err = {}
+    
+    if (!title.trim()) {
+      err.title = "can't be empty"
+    }
+    
+    if (!description.trim()) {
+      err.description = "can't be empty"
+    }
     
     const invalid = subtasks.filter(st => !st.value || !st.value.trim())
     if (invalid.length) {
-      const err = {}
-      invalid.forEach(s => err[s.id] = "Subtask can't be empty")
+      invalid.forEach(s => err[s.id] = "can't be empty")
+    }
+    
+    if (Object.keys(err).length > 0) {
       setErrors(err)
       return
     }
@@ -103,14 +113,25 @@ function AddTask({ setIsOpen, onCreateTask, theme, columns, activeColumnId, boar
           {taskToEdit ? 'Edit Task' : 'Add New Task'}
         </h2>
 
-        <BaseInput
-          title="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          labelClass={`${isDark? "text-white" : ""}`}
-          inputClass={`${isDark? "text-white placeholder:text-[#828FA3]" : ""}`}
-          placeholder="e.g. Take coffee break"
-        />
+        <div className="flex flex-col gap-2">
+          <BaseInput
+            title="Title"
+            value={title}
+            onChange={(e) => {
+              setTitle(e.target.value)
+              if (e.target.value && e.target.value.trim()) {
+                setErrors(prev => {
+                  const c = { ...prev }
+                  delete c.title
+                  return c
+                })
+              }
+            }}
+            labelClass={`${isDark? "text-white" : ""}`}
+            inputClass={`${isDark? "text-white placeholder:text-[#828FA3]" : ""}`}
+            placeholder="e.g. Take coffee break"
+          />
+        </div>
 
         <div className="flex flex-col gap-2">
           <label className={`text-[12px] font-bold ${isDark? "text-white" : "text-[#828FA3]"} capitalize`}>
@@ -119,7 +140,16 @@ function AddTask({ setIsOpen, onCreateTask, theme, columns, activeColumnId, boar
 
           <textarea
             value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            onChange={(e) => {
+              setDescription(e.target.value)
+              if (e.target.value && e.target.value.trim()) {
+                setErrors(prev => {
+                  const c = { ...prev }
+                  delete c.description
+                  return c
+                })
+              }
+            }}
             placeholder="e.g. Short break"
             className={`${isDark ? "text-white placeholder:text-[#828FA3]" : ""} h-24 px-3 pt-2 outline-0 rounded-sm border-[#828FA3]/25 border-2 text-[13px] resize-none`}
           />
@@ -152,7 +182,7 @@ function AddTask({ setIsOpen, onCreateTask, theme, columns, activeColumnId, boar
                 </button>
 
                 {errors[st.id] && (
-                  <span className="absolute right-12 top-1/2 -translate-y-1/2 text-xs text-[#EA5555]">{errors[st.id]}</span>
+                  <span className="absolute right-15 top-1/2 -translate-y-1/2 text-xs text-[#EA5555]">{errors[st.id]}</span>
                 )}
               </div>
             ))}

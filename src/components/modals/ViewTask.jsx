@@ -51,7 +51,7 @@ function ViewTask({ onClose, task, boardId, currentColumn, columns = [], updateT
 
   return (
     <Modal onClose={onClose} className={`${isDark ? "bg-[#2B2C37]" : "bg-white"} px-8 py-6 flex flex-col gap-6 rounded-xl w-[400px]`}>
-      <div className="flex items-start justify-between">
+      <div className="flex justify-between items-center">
         <h2 className={`${isDark? "text-white" : "text-black"} font-bold text-lg`}>{localTask.title}</h2>
 
         <div className="relative" ref={dotsRef}>
@@ -70,13 +70,17 @@ function ViewTask({ onClose, task, boardId, currentColumn, columns = [], updateT
         </div>
       </div>
 
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-6">
+        <p className="text-[13px] text-[#828FA3]">{task.description}</p>
+        <span className={`${isDark? "text-white" : "text-[#828FA3]"} text-xs font-bold`}>Subtasks {`${localTask.subtasks.filter(item => item.isCompleted === true).length} of ${localTask.subtasks.length}`}</span>
+        <div className="flex flex-col gap-2">  
         {(localTask.subtasks || []).map(st => (
-          <label key={st.id} className={`flex items-center gap-3 ${isDark? "text-white": "text-black"}`}>
-            <input type="checkbox" checked={st.isCompleted} onChange={() => toggleSubtask(st.id)} />
-            <span className={`${st.isCompleted ? (isDark ? 'text-[#A8A9B3] line-through' : 'text-[#828FA3] line-through') : ''}`}>{st.value || ""}</span>
+          <label key={st.id} className={`flex items-center gap-3 p-4 ${isDark? "text-white bg-[#20212C]": "text-black bg-[#F4F7FD]"}`}>
+            <input type="checkbox" checked={st.isCompleted} className="w-4 h-4" onChange={() => toggleSubtask(st.id)} />
+            <span className={`${st.isCompleted ? (isDark ? 'text-[#A8A9B3] line-through' : 'text-[#828FA3] line-through') : ''} text-[12px] font-bold`}>{st.value || ""}</span>
           </label>
         ))}
+        </div>
       </div>
 
       <div className="flex flex-col gap-2">

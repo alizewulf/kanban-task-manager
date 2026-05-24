@@ -191,11 +191,10 @@ useEffect(() => {
     setCurrentPage(boards[0].id)
   }
 }, [activeBoard, boards])
-if (!activeBoard) {
-  return <div>No boards</div>
-}
+// Do not early-return when there's no active board — let layout render
+// MainContent and Header handle empty states (showing EmptyState, disabling actions)
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen transition-colors duration-300">
       <SideBar
         boards={boards}
         currentPage={currentPage}

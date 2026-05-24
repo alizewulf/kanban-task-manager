@@ -26,14 +26,14 @@ function MainContent({
 
   if (!board) {
     return (
-      <main className={`${isDark ? "bg-[#20212C]" : "bg-[#E4EBFA]"} flex flex-1 overflow-hidden overflow-x-auto`}>
+      <main className={`${isDark ? "bg-[#20212C]" : "bg-[#E4EBFA]"} flex flex-1 overflow-hidden overflow-x-auto transition-colors duration-300`}>
         <EmptyState setActiveModal={setActiveModal} />
       </main>
     )
   }
 
   return (
-    <main className={`${isDark ? "bg-[#20212C]" : "bg-[#E4EBFA]"} flex flex-1 overflow-hidden overflow-x-auto`}>
+    <main className={`${isDark ? "bg-[#20212C]" : "bg-[#E4EBFA]"} flex flex-1 overflow-hidden overflow-x-auto transition-colors duration-300`}>
 
       {board.columns.length === 0 ? (
         <EmptyState setActiveModal={setActiveModal} />

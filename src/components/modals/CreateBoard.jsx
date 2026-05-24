@@ -22,7 +22,7 @@ function CreateBoard({ onCreateBoard, onUpdateBoard, theme, setActiveModal, boar
       .map((col) => ({ ...col, title: col.title.trim() }))
       .filter((col) => col.title)
 
-    if (!normalizedTitle || normalizedColumns.length === 0) return
+    if (!normalizedTitle) return
 
     const exists = boards.some(
       (board) =>
