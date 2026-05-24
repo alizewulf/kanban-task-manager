@@ -77,7 +77,7 @@ function ViewTask({ onClose, task, boardId, currentColumn, columns = [], updateT
         {(localTask.subtasks || []).map(st => (
           <label key={st.id} className={`flex items-center gap-3 p-4 ${isDark? "text-white bg-[#20212C]": "text-black bg-[#F4F7FD]"}`}>
             <input type="checkbox" checked={st.isCompleted} className="w-4 h-4" onChange={() => toggleSubtask(st.id)} />
-            <span className={`${st.isCompleted ? (isDark ? 'text-[#A8A9B3] line-through' : 'text-[#828FA3] line-through') : ''} text-[12px] font-bold`}>{st.value || ""}</span>
+            <span className={`capitalize ${st.isCompleted ? (isDark ? 'text-[#A8A9B3] line-through' : 'text-[#828FA3] line-through') : ''} text-[12px] font-bold`}>{st.value || ""}</span>
           </label>
         ))}
         </div>

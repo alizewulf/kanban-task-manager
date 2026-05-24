@@ -27,8 +27,8 @@ function Column({ theme, column, columns = [], boardId, updateTask, moveTask, op
             const done = task.subtasks?.filter(st => st.isCompleted).length || 0
 
             return (
-              <div key={task.id} className="bg-transparent rounded-[8px] p-4 shadow-sm cursor-pointer" onClick={() => handleOpenTask(task)}>
-                <h3 className={`text-sm font-bold ${isDark ? "text-white":"text-[#0B0C10]"}`}>{task.title}</h3>
+              <div key={task.id} className="bg-transparent rounded-[8px] p-4 group shadow-sm cursor-pointer" onClick={() => handleOpenTask(task)}>
+                <h3 className={`text-sm font-bold ${isDark ? "text-white":"text-[#0B0C10]"} group-hover:text-[#A8A4FF] duration-300`}>{task.title}</h3>
                 <p className={`text-[13px] mt-2 ${isDark ? "text-[#A8A9B3]" : "text-[#828FA3]"}`}>{`${done} of ${total} subtasks`}</p>
               </div>
             )

@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react"
 import dots from '../../../assets/3dots.svg'
 import LightBtn from '../../common/Button'
-
+import mobileLogo from '../../../assets/mobile_logo.svg'
+import dropdownSVG from '../../../assets/dropdown.svg'
 function Header({ activeBoard, setActiveModal, onDeleteBoard, setIsTaskModalOpen,toggleTheme, theme }) {
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const dropdownRef = useRef(null)
@@ -19,19 +20,31 @@ function Header({ activeBoard, setActiveModal, onDeleteBoard, setIsTaskModalOpen
   }, [])
 
   return (
-    <header className={`flex justify-between items-center pr-6 pl-8 pb-7 pt-5 transition-colors duration-300 ${isDark? "text-white bg-[#2B2C37]" : "border-b-2 border-b-[#E4EBFA]"}`}>
-      <h1 className="text-[24px] font-bold capitalize">
-        {activeBoard ? activeBoard.title : ""}
-      </h1>
+    <header className={`flex justify-between items-center md:pr-6 md:pl-8 md:pb-7 md:pt-5 py-5 px-6 transition-colors duration-300 ${isDark? "text-white bg-[#2B2C37]" : "border-b-2 border-b-[#E4EBFA]"}`}>
+      <div className="flex gap-4 items-center">
+        <img src={mobileLogo} className="md:hidden w-6 h-6" alt="mobile logo"/>
+        <div class="flex gap-2 items-center">
+          <h1 className="text-[18px] md:text-[20px] text-nowrap lg:text-[24px] font-bold capitalize">
+            {activeBoard ? activeBoard.title : ""}
+          </h1>
+          <img src={dropdownSVG} className="md:hidden"/>
+        </div>
+      </div>
 
-      <div className="flex gap-6 relative items-center">
+      <div className="flex gap-4 md:gap-6 relative items-center">
         <LightBtn
           onClick={() => activeBoard && setIsTaskModalOpen(true)}
           variant="primary"
+          customClass="hidden md:flex"
         >
           + add new task
         </LightBtn>
-
+        <button
+        onClick={() => activeBoard && setIsTaskModalOpen(true)}
+        className="items-center sm:hidden font-bold cursor-pointer justify-center flex capitalize duration-300 bg-[#635FC7] text-white py-2.5 px-4.5 rounded-3xl hover:bg-[#A8A4FF]"
+        >
+        +
+        </button>
         {activeBoard && (
           <div className="relative" ref={dropdownRef}>
             <img
