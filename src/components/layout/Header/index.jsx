@@ -23,11 +23,11 @@ function Header({ activeBoard, setActiveModal, onDeleteBoard, setIsTaskModalOpen
     <header className={`flex justify-between items-center md:pr-6 md:pl-8 md:pb-7 md:pt-5 py-5 px-6 transition-colors duration-300 ${isDark? "text-white bg-[#2B2C37]" : "border-b-2 border-b-[#E4EBFA]"}`}>
       <div className="flex gap-4 items-center">
         <img src={mobileLogo} className="md:hidden w-6 h-6" alt="mobile logo"/>
-        <div class="flex gap-2 items-center">
+        <div className="flex gap-2 items-center">
           <h1 className="text-[18px] md:text-[20px] text-nowrap lg:text-[24px] font-bold capitalize">
             {activeBoard ? activeBoard.title : ""}
           </h1>
-          <img src={dropdownSVG} className="md:hidden"/>
+          <img src={dropdownSVG} className="md:hidden" onClick={() => setActiveModal("mobileMenu")}/>
         </div>
       </div>
 
@@ -41,7 +41,7 @@ function Header({ activeBoard, setActiveModal, onDeleteBoard, setIsTaskModalOpen
         </LightBtn>
         <button
         onClick={() => activeBoard && setIsTaskModalOpen(true)}
-        className="items-center sm:hidden font-bold cursor-pointer justify-center flex capitalize duration-300 bg-[#635FC7] text-white py-2.5 px-4.5 rounded-3xl hover:bg-[#A8A4FF]"
+        className="items-center sm:hidden font-bold cursor-pointer leading-none justify-center flex capitalize duration-300 bg-[#635FC7] text-white py-2.5 px-4.5 rounded-3xl hover:bg-[#A8A4FF]"
         >
         +
         </button>

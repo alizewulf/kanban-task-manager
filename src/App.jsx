@@ -7,6 +7,7 @@ import MainContent from "./components/layout/MainContent";
 import CreateBoard from "./components/modals/CreateBoard";
 import DeleteBoard from "./components/modals/DeleteBoard";
 import DeleteTask from "./components/modals/DeleteTask";
+import MobileMenu from "./components/modals/MobileMenu";
 import { createColumnUtil } from "./components/utils/createColumnUtil";
 
 const DEFAULT_BOARDS = [
@@ -252,6 +253,18 @@ useEffect(() => {
           onDeleteBoard={handleDeleteBoard}
           board={activeBoard}
           theme={theme}
+        />
+      )}
+
+      {activeModal === "mobileMenu" && (
+        <MobileMenu
+          onClose={() => setActiveModal(null)}
+          boards={boards}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          setActiveModal={setActiveModal}
+          theme={theme}
+          toggleTheme={toggleTheme}
         />
       )}
 
