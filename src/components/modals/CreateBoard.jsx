@@ -10,16 +10,16 @@ function CreateBoard({ onCreateBoard, onUpdateBoard, theme, setActiveModal, boar
   const isDark = theme === "dark"
   const [title, setTitle] = useState(boardToEdit?.title ?? "");
   const [columns, setColumns] = useState(() =>
-    boardToEdit?.columns?.map((col) => ({ id: col.id, title: col.title })) ?? [
-      { id: crypto.randomUUID(), title: "Todo" },
-      { id: crypto.randomUUID(), title: "Doing" },
+    boardToEdit?.columns?.map((col) => ({ id: col.id, title: col.title, tasks: col.tasks || [] })) ?? [
+      { id: crypto.randomUUID(), title: "Todo", tasks: [] },
+      { id: crypto.randomUUID(), title: "Doing", tasks: [] },
     ],
   )
 
   function handleSubmit() {
     const normalizedTitle = title.trim()
     const normalizedColumns = columns
-      .map((col) => ({ ...col, title: col.title.trim() }))
+      .map((col) => ({ ...col, id: col.id ?? crypto.randomUUID(), title: col.title.trim(), tasks: col.tasks || [] }))
       .filter((col) => col.title)
 
     if (!normalizedTitle) return
@@ -32,10 +32,30 @@ function CreateBoard({ onCreateBoard, onUpdateBoard, theme, setActiveModal, boar
 
     if (exists) return
 
+    const boardId = boardToEdit?.id ?? crypto.randomUUID()
+
+    // Preserve existing column ids and tasks when possible.
+    const resultColumns = normalizedColumns.map((col) => {
+      const existing = boardToEdit?.columns?.find((c) => c.id === col.id)
+      if (existing) {
+        return { ...existing, title: col.title }
+      }
+      return createColumnUtil(col.title, col.id)
+    })
+
+    // If some columns were removed, merge their tasks into the first remaining column so tasks are not lost.
+    if (boardToEdit) {
+      const removed = boardToEdit.columns?.filter((c) => !normalizedColumns.some((nc) => nc.id === c.id)) || []
+      const removedTasks = removed.flatMap((c) => c.tasks || [])
+      if (removedTasks.length > 0 && resultColumns.length > 0) {
+        resultColumns[0].tasks = [...(resultColumns[0].tasks || []), ...removedTasks]
+      }
+    }
+
     const boardData = {
-      id: boardToEdit?.id ?? crypto.randomUUID(),
+      id: boardId,
       title: normalizedTitle,
-      columns: normalizedColumns.map((col) => createColumnUtil(col.title)),
+      columns: resultColumns,
     }
 
     if (boardToEdit) {
